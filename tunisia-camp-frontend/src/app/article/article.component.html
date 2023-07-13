@@ -1,0 +1,105 @@
+<div class="article-page">
+  <div class="banner">
+    <div class="container">
+      <h1>{{ article.title }}</h1>
+      <app-article-meta [article]="article">
+          <span
+            [hidden]="!canModify">
+          <a class="btn btn-sm btn-outline-secondary"
+             [routerLink]="['/editor', article.id]">
+            <i class="ion-edit"></i> Edit Article
+          </a>
+
+          <button class="btn btn-sm btn-outline-danger"
+            [ngClass]="{disabled: isDeleting}"
+            (click)="deleteArticle()">
+            <i class="ion-trash-a"></i> Delete Article
+          </button>
+        </span>
+
+<!--        <span [hidden]="canModify">-->
+<!--          <app-favorite-button-->
+<!--            [article]="article"-->
+<!--            (toggle)="onToggleFavorite($event)">-->
+<!--            {{ article.favorited ? 'Unfavorite' : 'Favorite' }} Article <span class="counter">({{ article.favoritesCount }})</span>-->
+<!--          </app-favorite-button>-->
+<!--        </span>-->
+
+      </app-article-meta>
+    </div>
+  </div>
+
+  <div class="container page">
+
+    <div class="row article-content">
+      <div class="col-md-12">
+
+        <div [innerHTML]="article.content | markdown"></div>
+
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="article-actions">
+      <app-article-meta [article]="article">
+
+          <span [hidden]="!canModify">
+          <a class="btn btn-sm btn-outline-secondary"
+             [routerLink]="['/editor', article.id]">
+            <i class="ion-edit"></i> Edit Article
+          </a>
+
+          <button class="btn btn-sm btn-outline-danger"
+            [ngClass]="{disabled: isDeleting}"
+            (click)="deleteArticle()">
+            <i class="ion-trash-a"></i> Delete Article
+          </button>
+        </span>
+
+<!--        <span [hidden]="canModify">-->
+<!--          <app-favorite-button-->
+<!--            [article]="article"-->
+<!--            (toggle)="onToggleFavorite($event)">-->
+<!--            {{ article.favorited ? 'Unfavorite' : 'Favorite' }} Article <span class="counter">({{ article.favoritesCount }})</span>-->
+<!--          </app-favorite-button>-->
+<!--        </span>-->
+
+      </app-article-meta>
+    </div>
+
+    
+    <div class="row">
+      <div class="col-xs-12 col-md-8 offset-md-2">
+        <div >
+          <app-list-errors [errors]="commentFormErrors"></app-list-errors>
+          <form class="card comment-form" (ngSubmit)="addComment()">
+            <fieldset [disabled]="isSubmitting">
+              <div class="card-block">
+                <textarea class="form-control"
+                  placeholder="Write a comment..."
+                  rows="3"
+                  [formControl]="commentControl"
+                ></textarea>
+              </div>
+              <div class="card-footer">
+                <img [src]="currentUser.image" class="comment-author-img" />
+                <button class="btn btn-sm btn-primary" type="submit">
+                 Post Comment
+                </button>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+        <app-article-comment
+          *ngFor="let comment of comments"
+          [comment]="comment"
+          (deleteComment)="onDeleteComment(comment)">
+        </app-article-comment>
+<!--                  </div>-->
+
+      </div>
+    </div>
+
+  </div>
+</div>

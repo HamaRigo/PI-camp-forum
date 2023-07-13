@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  sonarqube:
+    image: sonarqube
+    container_name: sonar-container
+    ports:
+      - "9000:9000"
+    volumes:
+      - "SonarQube_data:/opt/SonarQube/data"
+      - "SonarQube_extensions:/opt/SonarQube/extensions"
+      - "SonarQube_logs:/opt/SonarQube/logs"
+  nexus:
+    image: klo2k/nexus3
+    container_name: nexus-container
+    ports:
+      - "8081:8081"
+    volumes:
+      - "nexus-data:/nexus-data"
+volumes:
+  SonarQube_data:
+  SonarQube_extensions:
+  SonarQube_logs:
+  nexus-data:

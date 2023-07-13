@@ -1,0 +1,19 @@
+<div class="article-preview">
+  <app-article-meta [article]="article">
+    <app-favorite-button
+      [article]="article"
+      (toggle)="onToggleFavorite($event)"
+
+      class="pull-xs-right" >
+       Rate
+      {{article.ratingPoints}}
+<!--      Rate-->
+    </app-favorite-button>
+  </app-article-meta>
+
+  <a [routerLink]="['/article', article.id]" [state]="article" class="preview-link">
+    <h1>{{ article.title }}</h1>
+    <p>{{ article.content }}</p>
+    <span>Read more...</span>
+  </a>
+</div>
