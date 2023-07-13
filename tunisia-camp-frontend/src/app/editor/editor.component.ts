@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, UntypedFormControl } from '@angular/forms';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Article, ArticlesService, UserService } from '../core';
@@ -10,25 +10,25 @@ import { Article, ArticlesService, UserService } from '../core';
 })
 export class EditorComponent implements OnInit {
   article: Article = {} as Article;
-  articleForm: UntypedFormGroup;
-  tagField = new UntypedFormControl();
   errors: Object = {};
   isSubmitting = false;
-
+  articleForm: FormGroup;
+   
   constructor(
     private articlesService: ArticlesService,
     private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
-    private fb: UntypedFormBuilder
+    private fb: FormBuilder
   ) {
     // use the FormBuilder to create a form group
-    this.articleForm = this.fb.group({
-      title: '',
-      imageUrl: '',
-      content: ''
-    });
+    const urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
 
+    this.articleForm = this.fb.group({      
+      title: ['', Validators.required ],
+      imageUrl: ['', [Validators.required, Validators.pattern(urlRegex)]],
+      content: ['', Validators.required ]
+    });
   }
 
   ngOnInit() {

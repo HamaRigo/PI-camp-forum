@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 
 import { Article, Comment, UserService } from '../core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-article-comment',
@@ -10,11 +10,11 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 export class ArticleCommentComponent implements OnInit {
   constructor(
     private userService: UserService,
-    private fb: UntypedFormBuilder
+    private fb: FormBuilder
   ) {
     this.editCommentForm = this.fb.group({
       id: null,
-      content: null,  
+      content: [null, Validators.required],  
       user: null,
       post: null,
     });
@@ -25,7 +25,7 @@ export class ArticleCommentComponent implements OnInit {
   @Output() editComment = new EventEmitter<boolean>();
   @Output() deleteComment = new EventEmitter<boolean>();
 
-  editCommentForm: UntypedFormGroup;
+  editCommentForm: FormGroup;
   canModify: boolean;
   isEditing: boolean;
   isSubmitting: boolean;

@@ -2,41 +2,62 @@
   <div class="container page">
     <div class="row">
       <div class="col-md-10 offset-md-1 col-xs-12">
-
         <app-list-errors [errors]="errors"></app-list-errors>
-
-        <form [formGroup]="articleForm">
+        <form [formGroup]="articleForm" novalidate>
           <fieldset [disabled]="isSubmitting">
-
             <fieldset class="form-group">
               <input class="form-control form-control-lg"
                 formControlName="title"
                 type="text"
                 placeholder="Article Title" />
             </fieldset>
-
+            <div *ngIf="articleForm.controls['title'].invalid && (articleForm.controls['title'].dirty ||
+             articleForm.controls['title'].touched)" class="alert alert-danger">
+              <div *ngIf="articleForm.controls['title'].errors.required">
+                Title is required.
+              </div>
+            </div>
+              
             <fieldset class="form-group">
               <input class="form-control"
                 formControlName="imageUrl"
                 type="text"
-                placeholder="Image URL" />
+                placeholder="Image URL"
+               />
             </fieldset>
+            <div *ngIf="articleForm.controls['imageUrl'].invalid && (articleForm.controls['imageUrl'].dirty ||
+             articleForm.controls['imageUrl'].touched)" class="alert alert-danger">
+              <div *ngIf="articleForm.controls['imageUrl'].errors.required">
+                Image URL is required.
+              </div>
+              <div *ngIf="articleForm.controls['imageUrl'].errors?.pattern">
+                Image URL is not valid.
+              </div>
+            </div>
 
             <fieldset class="form-group">
               <textarea class="form-control"
                 formControlName="content"
                 rows="8"
-                placeholder="Write your article (in markdown)">
+                placeholder="Write your article (in markdown)"
+              >
               </textarea>
             </fieldset>
-
-            <button class="btn btn-lg pull-xs-right btn-primary" type="button" (click)="submitForm()">
+            <div *ngIf="articleForm.controls['content'].invalid && (articleForm.controls['content'].dirty ||
+             articleForm.controls['content'].touched)" class="alert alert-danger">
+              <div *ngIf="articleForm.controls['content'].errors.required">
+                Content is required.
+              </div>
+            </div>
+            <button
+              [disabled]="articleForm.invalid"
+              class="btn btn-lg pull-xs-right btn-primary" 
+              type="button" 
+              (click)="submitForm()">
               Publish Article
             </button>
-
           </fieldset>
         </form>
-
       </div>
     </div>
   </div>

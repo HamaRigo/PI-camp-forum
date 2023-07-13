@@ -2,6 +2,14 @@
   <form [formGroup]="editCommentForm" (ngSubmit)="editHandled()">
     <div class="card-block">
       <fieldset [disabled]="isSubmitting">
+        <div *ngIf="editCommentForm.controls['content'].invalid && (editCommentForm.controls['content'].dirty || 
+        editCommentForm.controls['content'].touched)"
+          class="alert-danger"
+          style="padding: 6px; text-align: center;">
+          <div *ngIf="editCommentForm.controls['content'].errors.required">
+            Comment is required.
+          </div>
+        </div> 
         <textarea 
           [hidden]="!isEditing"
           class="form-control"
@@ -28,7 +36,12 @@
       </span>
 
       <span class="mod-options">
-        <button class="btn btn-sm btn-primary" type="submit" [disabled]="isSubmitting" [hidden]="!isEditing">
+        <button 
+        class="btn btn-sm btn-primary" 
+        type="submit" 
+        [disabled]="isSubmitting || editCommentForm.invalid"
+        [hidden]="!isEditing"
+        >
           Edit Comment
         </button>
       </span>

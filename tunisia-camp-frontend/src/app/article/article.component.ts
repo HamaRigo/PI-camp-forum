@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import {
@@ -20,7 +20,7 @@ export class ArticleComponent implements OnInit {
   currentUser: User;
   canModify: boolean;
   comments: Comment[];
-  commentControl = new UntypedFormControl();
+  commentControl = new FormControl('', Validators.required);
   commentFormErrors = {};
   isSubmitting = false;
   isDeleting = false;

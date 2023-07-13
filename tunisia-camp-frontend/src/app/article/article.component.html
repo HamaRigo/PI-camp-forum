@@ -9,7 +9,9 @@
             <i class="ion-edit"></i> Edit Article
           </a>
 
-          <button class="btn btn-sm btn-outline-danger"
+          <button 
+            style="margin-left: 6px"
+            class="btn btn-sm btn-outline-danger"
             [ngClass]="{disabled: isDeleting}"
             (click)="deleteArticle()">
             <i class="ion-trash-a"></i> Delete Article
@@ -44,7 +46,9 @@
             <i class="ion-edit"></i> Edit Article
           </a>
 
-          <button class="btn btn-sm btn-outline-danger"
+          <button
+            style="margin-left: 6px"
+            class="btn btn-sm btn-outline-danger"
             [ngClass]="{disabled: isDeleting}"
             (click)="deleteArticle()">
             <i class="ion-trash-a"></i> Delete Article
@@ -57,8 +61,15 @@
       <div class="col-xs-12 col-md-8 offset-md-2">
         <div >
           <app-list-errors [errors]="commentFormErrors"></app-list-errors>
-          <form class="card comment-form" (ngSubmit)="addComment()">
+          <form class="card comment-form" (ngSubmit)="addComment()" novalidate>
             <fieldset [disabled]="isSubmitting">
+              <div *ngIf="commentControl.invalid && (commentControl.dirty || commentControl.touched)"
+               class="alert-danger"
+               style="padding: 6px; text-align: center;">
+                <div *ngIf="commentControl.errors.required">
+                  Comment is required.
+                </div>
+              </div>
               <div class="card-block">
                 <textarea class="form-control"
                   placeholder="Write a comment..."
@@ -68,7 +79,10 @@
               </div>
               <div class="card-footer">
                 <img [src]="currentUser.image" class="comment-author-img" />
-                <button class="btn btn-sm btn-primary" type="submit">
+                <button 
+                [disabled]="commentControl.invalid"
+                class="btn btn-sm btn-primary" 
+                type="submit">
                  Post Comment
                 </button>
               </div>
