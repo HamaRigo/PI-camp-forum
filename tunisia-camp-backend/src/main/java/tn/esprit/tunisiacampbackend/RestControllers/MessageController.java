@@ -10,7 +10,6 @@ import tn.esprit.tunisiacampbackend.DAO.Repositories.MessageRepository;
 
 @RestController
 public class MessageController {
-
     @Autowired
     MessageRepository messageRepository;
 

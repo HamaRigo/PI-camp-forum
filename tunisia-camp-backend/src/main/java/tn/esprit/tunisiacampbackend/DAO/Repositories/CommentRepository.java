@@ -5,5 +5,5 @@ import tn.esprit.tunisiacampbackend.DAO.Entities.Comment;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CommentRepo extends JpaRepository<Comment, Long> {
+public interface CommentRepository extends JpaRepository<Comment, Long> {
 }

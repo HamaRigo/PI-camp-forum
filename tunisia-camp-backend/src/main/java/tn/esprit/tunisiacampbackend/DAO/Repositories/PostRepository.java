@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import tn.esprit.tunisiacampbackend.DAO.Entities.Post;
 import java.util.Collection;
 
-public interface PostRepo extends JpaRepository<Post, Long> {
+public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("SELECT p from  Post p")
     Collection<Post> findAllSortedByDateTimeOfPost();
     Collection<Post> findAllByReactsIsNotEmpty();

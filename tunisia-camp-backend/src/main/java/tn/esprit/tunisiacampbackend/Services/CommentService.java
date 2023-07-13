@@ -5,18 +5,13 @@ import org.springframework.stereotype.Service;
 import tn.esprit.tunisiacampbackend.DAO.DTO.CommentDto;
 import tn.esprit.tunisiacampbackend.DAO.DTO.ToDtoConverter;
 import tn.esprit.tunisiacampbackend.DAO.Entities.Comment;
-import tn.esprit.tunisiacampbackend.DAO.Repositories.CommentRepo;
+import tn.esprit.tunisiacampbackend.DAO.Repositories.CommentRepository;
 import tn.esprit.tunisiacampbackend.exception.CommentException;
 
 @Service
 public class CommentService {
-
-    private final CommentRepo commentRepository;
-
     @Autowired
-    public CommentService(final CommentRepo commentRepository) {
-        this.commentRepository = commentRepository;
-    }
+    private CommentRepository commentRepository;
 
     public CommentDto create(final Comment comment) {
         return ToDtoConverter.commentToDto(this.commentRepository.save(comment));
@@ -32,6 +27,9 @@ public class CommentService {
 
 //    @PreAuthorize("hasRole('USER')")
     public void delete(final Long id) {
+        this.commentRepository.findById(id).orElseThrow(
+                () -> new CommentException("Can't delete. Comment not found!")
+        );
         this.commentRepository.deleteById(id);
     }
 }

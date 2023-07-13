@@ -12,12 +12,8 @@ import tn.esprit.tunisiacampbackend.Services.CommentService;
 @RestController
 @RequestMapping("/comments")
 public class CommentController {
-    private final CommentService commentService;
-
     @Autowired
-    public CommentController(final CommentService commentService) {
-        this.commentService = commentService;
-    }
+    private CommentService commentService;
 
     @PostMapping
     public ResponseEntity<CommentDto> createComment(@RequestBody final Comment comment) {

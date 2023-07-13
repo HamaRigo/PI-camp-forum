@@ -8,16 +8,13 @@ import tn.esprit.tunisiacampbackend.DAO.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-
 @Service("userService")
 public class UserServiceImpl implements UserService {
-
     @Autowired
-    private UserRepository userDao;
+    private UserRepository userRepository;
 
     public UserDTO getDefaultUser() {
-        User defaultUser = userDao.findById(1L).orElse(null);
+        User defaultUser = userRepository.findById(1L).orElse(null);
         if(defaultUser != null)
             return ToDtoConverter.userToDto(defaultUser);
         else
@@ -26,7 +23,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User connect(User user) throws UsernameAlreadyUsedException {
-        User dbUser = userDao.findByUsername(user.getUsername());
+        User dbUser = userRepository.findByUsername(user.getUsername());
 
         if (dbUser != null) {
 
@@ -35,11 +32,11 @@ public class UserServiceImpl implements UserService {
             }
 
             dbUser.setConnected(true);
-            return userDao.save(dbUser);
+            return userRepository.save(dbUser);
         }
 
         user.setConnected(true);
-        return userDao.save(user);
+        return userRepository.save(user);
     }
 
     @Override
@@ -48,12 +45,12 @@ public class UserServiceImpl implements UserService {
             return null;
         }
 
-        User dbUser = userDao.findByUsername(user.getUsername());
+        User dbUser = userRepository.findByUsername(user.getUsername());
         if (dbUser == null) {
             return user;
         }
 
         dbUser.setConnected(false);
-        return userDao.save(dbUser);
+        return userRepository.save(dbUser);
     }
 }

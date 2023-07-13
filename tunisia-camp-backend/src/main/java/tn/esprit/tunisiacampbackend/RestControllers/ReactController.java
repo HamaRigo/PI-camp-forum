@@ -8,18 +8,12 @@ import tn.esprit.tunisiacampbackend.DAO.DTO.ReactDto;
 import tn.esprit.tunisiacampbackend.DAO.Entities.React;
 import tn.esprit.tunisiacampbackend.Services.ReactService;
 
-import java.util.Collection;
-
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/reactions")
 public class ReactController {
-    private final ReactService reactService;
-
     @Autowired
-    public ReactController(final ReactService reactService) {
-        this.reactService = reactService;
-    }
+    private ReactService reactService;
 
     @PostMapping
     public ResponseEntity<ReactDto> createReaction(@RequestBody React reaction) {

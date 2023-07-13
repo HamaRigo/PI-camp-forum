@@ -10,8 +10,8 @@ import tn.esprit.tunisiacampbackend.DAO.DTO.PostDto;
 import tn.esprit.tunisiacampbackend.DAO.DTO.ToDtoConverter;
 import tn.esprit.tunisiacampbackend.DAO.Entities.Post;
 import tn.esprit.tunisiacampbackend.DAO.Entities.TypeReact;
-import tn.esprit.tunisiacampbackend.DAO.Repositories.PostRepo;
-import tn.esprit.tunisiacampbackend.DAO.Repositories.ReactRepo;
+import tn.esprit.tunisiacampbackend.DAO.Repositories.PostRepository;
+import tn.esprit.tunisiacampbackend.DAO.Repositories.ReactRepository;
 import tn.esprit.tunisiacampbackend.exception.PostException;
 
 import java.io.File;
@@ -24,15 +24,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class PostService {
-    private final PostRepo postRepository;
-    private final ReactRepo reactRepository;
-
     @Autowired
-    public PostService(final PostRepo postRepository, ReactRepo reactRepository)
-    {
-        this.postRepository = postRepository;
-        this.reactRepository = reactRepository;
-    }
+    private PostRepository postRepository;
+    @Autowired
+    private ReactRepository reactRepository;
 
     public Collection<PostDto> getAll() {
         Collection<Post> posts = this.postRepository.findAllSortedByDateTimeOfPost();
@@ -118,6 +113,9 @@ public class PostService {
 
 //    @PreAuthorize("hasRole('USER')")
     public void delete(final Long id) {
+        this.postRepository.findById(id).orElseThrow(
+                () -> new PostException("Can't delete. Post not found!")
+        );
         this.postRepository.deleteById(id);
     }
 

@@ -11,8 +11,7 @@ import tn.esprit.tunisiacampbackend.DAO.Repositories.MessageRepository;
 import java.util.Date;
 
 @Controller
-public class chatController {
-
+public class ChatController {
     @Autowired
     private SimpMessagingTemplate template;
 

@@ -42,14 +42,6 @@ public class User implements Serializable {
     @OneToMany(mappedBy="user", orphanRemoval = true, cascade = CascadeType.REMOVE)
     private List<Post> posts;
 
-    /*@JsonIgnore
-    @OneToMany(mappedBy="user")
-    private List<React> reacts;*/
-
-    /*@JsonIgnore
-    @OneToMany(mappedBy="user")
-    private List<Comment> comments;*/
-
 //    @OneToMany(mappedBy = "user")
 //    List<Order> orders ;
 
