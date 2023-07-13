@@ -1,15 +1,19 @@
 import { Component } from '@angular/core';
 
-import { ArticleListConfig } from '../core';
+import {ArticleListConfig} from '../core';
 
 @Component({
   selector: 'app-home-page',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent  {
+export class HomeComponent {
   listConfig: ArticleListConfig = {
     type: 'all',
     filters: {}
   };
+
+  setListTo(type: string = '', filters: Object = {}) {
+    this.listConfig = {type: type, filters: filters};
+  }
 }

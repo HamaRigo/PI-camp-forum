@@ -42,9 +42,19 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public Collection<PostDto> getAllPaginated(final Integer pageNumber, final Integer limit) {
+    public Collection<PostDto> getMostLiked() {
+        Collection<Post> posts = this.postRepository.findAllSortedByDateTimeOfPost();
+        setPostsReactsCount(posts);
+
+        return posts.stream()
+                .map(ToDtoConverter::postToDto)
+                .collect(Collectors.toList());
+    }
+
+    public Collection<PostDto> getAllPaginated(final Integer pageNumber, final Integer limit, final String type) {
         int index = pageNumber - 1;
-        Page<Post> posts = this.postRepository.findAll(PageRequest.of(index, limit, Sort.by("dateTimeOfPost").descending())); //limit or 20
+        String sortProp = type != null ? type : "dateTimeOfPost";
+        Page<Post> posts = this.postRepository.findAll(PageRequest.of(index, limit, Sort.by(sortProp).descending()));
         setPostsReactsCount(posts.getContent());
 
         return posts.stream()

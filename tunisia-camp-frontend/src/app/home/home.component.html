@@ -14,8 +14,17 @@
         <div class="feed-toggle">
           <ul class="nav nav-pills outline-active">
             <li class="nav-item">
-              <a class="nav-link active">
+              <a class="nav-link"
+                 [ngClass]="{'active': listConfig.type === 'all'}"
+                 (click)="setListTo('all')">
                 Articles
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link"
+                 [ngClass]="{'active': listConfig.type === 'ratingPoints'}"
+                 (click)="setListTo('ratingPoints')">
+                Rated Articles
               </a>
             </li>
           </ul>

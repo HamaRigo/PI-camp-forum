@@ -31,9 +31,14 @@ public class PostController {
         return new ResponseEntity<>(getListPosts(this.postService.getAll()), HttpStatus.OK);
     }
 
+    @GetMapping("/liked")
+    public ResponseEntity<HashMap<String,Object>> getAllPostsLiked() {
+        return new ResponseEntity<>(getListPosts(this.postService.getMostLiked()), HttpStatus.OK);
+    }
+
     @GetMapping("/paginated")
-    public ResponseEntity<HashMap<String,Object>> getPostsPaginated(@RequestParam final Integer page, @RequestParam final Integer limit) {
-        return new ResponseEntity<>(getListPosts(this.postService.getAllPaginated(page, limit)), HttpStatus.OK);
+    public ResponseEntity<HashMap<String,Object>> getPostsPaginated(@RequestParam final Integer page, @RequestParam final Integer limit, @RequestParam(required = false) final String type) {
+        return new ResponseEntity<>(getListPosts(this.postService.getAllPaginated(page, limit, type)), HttpStatus.OK);
     }
 
     @GetMapping("/paginatedByUser")

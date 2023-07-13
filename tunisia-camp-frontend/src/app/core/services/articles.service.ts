@@ -15,11 +15,15 @@ export class ArticlesService {
     // Convert any filters over to Angular's URLSearchParams
     const params = {};
 
+    console.log(config);
     Object.keys(config.filters)
     .forEach((key) => {
       params[key] = config.filters[key];
     });
-    
+    if(config.type != 'all') {
+      params['type'] = config.type;
+    }
+
     console.log(params);
 
     if(config.filters.userId != null) {
