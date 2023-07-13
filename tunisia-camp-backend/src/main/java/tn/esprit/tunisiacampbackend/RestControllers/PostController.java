@@ -107,9 +107,4 @@ public class PostController {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
-
-//    @GetMapping("/search")
-//    public ResponseEntity<Collection<PostDto>> searchPost(String q) {
-//        return new ResponseEntity<>(this.postService.search(q), HttpStatus.OK);
-//    }
 }

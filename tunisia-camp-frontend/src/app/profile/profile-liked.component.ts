@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 
-import { ArticleListConfig, Profile, User, UserService } from '../core';
+import { ArticleListConfig, User, UserService } from '../core';
 
 @Component({
   selector: 'app-profile-liked',
@@ -12,7 +11,7 @@ export class ProfileLikedComponent implements OnInit {
     private userService: UserService,
   ) {}
 
-  profile: Profile;
+  profile: User;
   LikedConfig: ArticleListConfig = {
     type: 'like',
     filters: {}

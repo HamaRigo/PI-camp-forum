@@ -3,7 +3,6 @@ export interface ArticleListConfig {
 
   filters: {
     userId?: number,
-    favorited?: string,
     limit?: number,
     page?: number,
   };

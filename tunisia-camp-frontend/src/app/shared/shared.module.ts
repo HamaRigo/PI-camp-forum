@@ -7,7 +7,6 @@ import { RouterModule } from '@angular/router';
 import { ArticleListComponent, ArticleMetaComponent, ArticlePreviewComponent } from './article-helpers';
 import { FavoriteButtonComponent } from './buttons';
 import { ListErrorsComponent } from './list-errors.component';
-import { ShowAuthedDirective } from './show-authed.directive';
 import { ReactButtonComponent } from './buttons/react-button.component';
 
 @NgModule({
@@ -25,7 +24,6 @@ import { ReactButtonComponent } from './buttons/react-button.component';
     FavoriteButtonComponent,
     ReactButtonComponent,
     ListErrorsComponent,
-    ShowAuthedDirective
   ],
   exports: [
     ArticleListComponent,
@@ -39,7 +37,6 @@ import { ReactButtonComponent } from './buttons/react-button.component';
     HttpClientModule,
     ListErrorsComponent,
     RouterModule,
-    ShowAuthedDirective
   ]
 })
 export class SharedModule {}

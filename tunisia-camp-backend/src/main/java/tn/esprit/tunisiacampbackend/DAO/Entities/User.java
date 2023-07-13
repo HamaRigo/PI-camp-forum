@@ -13,7 +13,6 @@ import java.util.List;
 @Setter
 @ToString
 @EqualsAndHashCode
-//@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -42,11 +41,6 @@ public class User implements Serializable {
     @OneToMany(mappedBy="user", orphanRemoval = true, cascade = CascadeType.REMOVE)
     private List<Post> posts;
 
-//    @OneToMany(mappedBy = "user")
-//    List<Order> orders ;
-
-    //    @OneToMany(mappedBy = "user")
-//    List<Feedback> feedbackList;
     public User() {
         super();
     }

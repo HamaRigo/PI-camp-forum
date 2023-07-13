@@ -17,7 +17,6 @@ public class ReactService {
         return ToDtoConverter.reactToDto(this.reactRepository.save(react));
     }
 
-    //    @PreAuthorize("hasRole('USER')")
     public ReactDto update(final React react) {
         this.reactRepository.findById(react.getId()).orElseThrow(
                 () -> new ReactException("Can't update. React not found!")
@@ -25,7 +24,6 @@ public class ReactService {
         return ToDtoConverter.reactToDto(this.reactRepository.save(react));
     }
 
-    //    @PreAuthorize("hasRole('USER')")
     public void delete(final Long id) {
         this.reactRepository.findById(id).orElseThrow(
                 () -> new ReactException("Can't delete. React not found!")

@@ -1,17 +1,10 @@
 <div class="article-meta">
-<!--  <a [routerLink]="['/profile', article.author.username]">-->
-    <img [src]="article.imageUrl" />
-<!--  </a>-->
-
+  <img [src]="article.imageUrl" />
   <div class="info">
-<!--    <a class="author"-->
-<!--      [routerLink]="['/profile', article.author.username]">-->
-      {{ article.user.username }}
-<!--    </a>-->
+    {{ article.user.username }}
     <span class="date">
       {{ article.dateTimeOfPost | date: 'dd.MM.YYYY, H:mm' }}
     </span>
   </div>
-
   <ng-content></ng-content>
 </div>

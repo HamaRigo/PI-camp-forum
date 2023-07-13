@@ -20,6 +20,4 @@ public class UserDTO {
     int phoneNumber;
     String image;
     Role role;
-//    List<OrderDTO> orders ;
-//    List<FeedbackDTO> feedbackList;
 }

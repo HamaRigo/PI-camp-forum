@@ -14,8 +14,7 @@ export class ArticlesService {
   query(config: ArticleListConfig): Observable<{articles: Article[], articlesCount: number}> {
     // Convert any filters over to Angular's URLSearchParams
     const params = {};
-
-    console.log(config);
+    
     Object.keys(config.filters)
     .forEach((key) => {
       params[key] = config.filters[key];
@@ -23,8 +22,7 @@ export class ArticlesService {
     if(config.type != 'all') {
       params['type'] = config.type;
     }
-
-    console.log(params);
+    
     if(config.type == 'like') {
       return this.apiService.get('/articles/liked', new HttpParams({ fromObject: params }));
     }

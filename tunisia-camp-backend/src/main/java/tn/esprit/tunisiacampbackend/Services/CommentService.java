@@ -17,7 +17,6 @@ public class CommentService {
         return ToDtoConverter.commentToDto(this.commentRepository.save(comment));
     }
 
-//    @PreAuthorize("hasRole('USER')")
     public CommentDto update(final Comment comment) {
         this.commentRepository.findById(comment.getId()).orElseThrow(
                 () -> new CommentException("Can't update. Comment not found!")
@@ -25,7 +24,6 @@ public class CommentService {
         return ToDtoConverter.commentToDto(this.commentRepository.save(comment));
     }
 
-//    @PreAuthorize("hasRole('USER')")
     public void delete(final Long id) {
         this.commentRepository.findById(id).orElseThrow(
                 () -> new CommentException("Can't delete. Comment not found!")

@@ -12,7 +12,4 @@ export interface User {
   image: string;
   role: string;
   posts: Article[];
-
-  token?: string;
-  bio?: string;
 }

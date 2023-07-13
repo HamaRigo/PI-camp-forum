@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ArticleListConfig, Profile, User, UserService } from '../core';
+import { ArticleListConfig, User, UserService } from '../core';
 
 @Component({
   selector: 'app-profile-articles',
@@ -11,7 +11,7 @@ export class ProfileArticlesComponent implements OnInit {
     private userService: UserService,
   ) {}
 
-  profile: Profile;
+  profile: User;
   articlesConfig: ArticleListConfig = {
     type: 'all',
     filters: {}

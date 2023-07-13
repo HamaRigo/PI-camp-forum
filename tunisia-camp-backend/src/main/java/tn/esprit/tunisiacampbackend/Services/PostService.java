@@ -98,12 +98,10 @@ public class PostService {
         return ToDtoConverter.postToDto(post);
     }
 
-    //    @PreAuthorize("hasRole('USER')")
     public PostDto create(final Post post) {
         return ToDtoConverter.postToDto(this.postRepository.save(post));
     }
 
-//    @PreAuthorize("hasRole('USER')")
     public PostDto update(final Post post) {
         this.postRepository.findById(post.getId()).orElseThrow(
                 () -> new PostException("Can't update. Post not found!")
@@ -111,7 +109,6 @@ public class PostService {
         return ToDtoConverter.postToDto(this.postRepository.save(post));
     }
 
-//    @PreAuthorize("hasRole('USER')")
     public void delete(final Long id) {
         this.postRepository.findById(id).orElseThrow(
                 () -> new PostException("Can't delete. Post not found!")
@@ -131,7 +128,6 @@ public class PostService {
         postRepository.save(foundPost);
     }
 
-//    @PreAuthorize("hasRole('USER')")
     public PostDto rate(final Long id, final Integer buttonState) {
         Post foundPost = this.postRepository.findById(id).orElseThrow(
                 () -> new PostException("Can't rate. Post not found!")
@@ -143,16 +139,4 @@ public class PostService {
         }
         return ToDtoConverter.postToDto(postRepository.save(foundPost));
     }
-
-//    @SuppressWarnings("unchecked")
-//    public Collection search(final String query) {
-//        Collection<Post> searchResults;
-//        try {
-//            searchResults = postSearch.search(query);
-//            return searchResults.stream().map(ToDtoConverter::postToDto).collect(Collectors.toList());
-//        } catch (Exception ignored) {
-//
-//        }
-//        return null;
-//    }
 }
