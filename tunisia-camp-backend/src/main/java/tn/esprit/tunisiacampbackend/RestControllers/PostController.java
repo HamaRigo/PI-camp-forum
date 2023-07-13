@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.tunisiacampbackend.DAO.DTO.PostDto;
 import tn.esprit.tunisiacampbackend.DAO.Entities.Post;
 import tn.esprit.tunisiacampbackend.Services.PostService;
+import tn.esprit.tunisiacampbackend.Services.ProhibitedWordService;
 import tn.esprit.tunisiacampbackend.exception.PostException;
 
 import java.io.IOException;
@@ -19,12 +20,10 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/articles")
 public class PostController {
-    private final PostService postService;
-
     @Autowired
-    public PostController(PostService postService) {
-        this.postService = postService;
-    }
+    private PostService postService;
+    @Autowired
+    private ProhibitedWordService prohibitedWordService;
 
     @GetMapping
     public ResponseEntity<HashMap<String,Object>> getAllPosts() {
@@ -69,16 +68,23 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<PostDto> createPost(@RequestBody final Post post) {
+        sanitizePostContent(post);
         return new ResponseEntity<>(this.postService.create(post), HttpStatus.OK);
     }
 
     @PutMapping
     public ResponseEntity<?> updatePost(@RequestBody final Post post) {
         try {
+            sanitizePostContent(post);
             return new ResponseEntity<>(this.postService.update(post), HttpStatus.OK);
         } catch (PostException exception) {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
         }
+    }
+
+    public void sanitizePostContent(Post post) {
+        String sanitizedPostContent = prohibitedWordService.sanitizeText(post.getContent());
+        post.setContent(sanitizedPostContent);
     }
 
     @DeleteMapping("/{id}")
