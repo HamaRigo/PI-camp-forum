@@ -4,6 +4,8 @@ import { Article, ReactsService, User, UserService } from '../../core';
 import { TypeReact } from '../../core/models/type-react.model';
 import { React } from '../../core/models/react.model';
 
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-react-button',
   templateUrl: './react-button.component.html'
@@ -54,11 +56,6 @@ export class ReactButtonComponent implements OnInit {
         data => {
           this.isSubmitting = false;
           this.userReact = data;
-          /*if(this.userReact == undefined) 
-            this.userReact = data;
-          else 
-            Object.assign(this.userReact, data);*/
-
           this.article.reacts.push(data);
           this.updateLikeDislikeCounts(data.type, null, null);
         },
@@ -100,6 +97,13 @@ export class ReactButtonComponent implements OnInit {
       if(update) {
         this.article.dislikesCount = Math.max(0, this.article.dislikesCount - 1); //for update
       }
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'The article has been liked',
+        showConfirmButton: false,
+        timer: 1500
+      });
     } else if (type === TypeReact.DISLIKE) { //add dislike 
       this.articleLiked = false;
       this.articleDisliked = true;
@@ -107,9 +111,23 @@ export class ReactButtonComponent implements OnInit {
       if(update) {
         this.article.likesCount = Math.max(0, this.article.likesCount - 1); //for update
       }
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'The article has been disliked',
+        showConfirmButton: false,
+        timer: 1500
+      });
     } else { //delete react
       this.articleLiked = false;
       this.articleDisliked = false;
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Your react has been deleted',
+        showConfirmButton: false,
+        timer: 1500
+      });
       if(like)
         this.article.likesCount = Math.max(0, this.article.likesCount - 1); //delete like
       else 

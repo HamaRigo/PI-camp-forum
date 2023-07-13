@@ -27,6 +27,7 @@
     "@angular/router": "^14.2.6",
     "marked": "^4.0.10",
     "rxjs": "^6.5.5",
+    "sweetalert2": "^11.6.13",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.4"
   },
@@ -42,7 +43,7 @@
     "@types/marked": "^4.0.1",
     "@typescript-eslint/eslint-plugin": "5.37.0",
     "@typescript-eslint/parser": "5.37.0",
-    "codelyzer": "^6.0.0",
+    "codelyzer": "^0.0.28",
     "eslint": "^8.23.1",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.0",
@@ -52,7 +53,7 @@
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
     "pre-commit": "^1.2.2",
-    "protractor": "~7.0.0",
+    "protractor": "^3.3.0",
     "ts-node": "^10.3.0",
     "tslint": "~6.1.0",
     "typescript": "~4.6.4"

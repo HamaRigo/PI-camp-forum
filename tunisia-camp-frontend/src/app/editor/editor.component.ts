@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { Article, ArticlesService, UserService } from '../core';
 
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-editor-page',
   templateUrl: './editor.component.html'
@@ -42,12 +44,14 @@ export class EditorComponent implements OnInit {
   }
   submitForm() {
     this.isSubmitting = true;
+    let action = 'updated';
 
     // update the model
     this.updateArticle(this.articleForm.value);
 
     // new post => assign current user to post
     if(this.article.user == null) {
+      action = 'added';
       this.userService.currentUser.subscribe(
         (userData) => {
           this.article.user = userData;
@@ -56,7 +60,16 @@ export class EditorComponent implements OnInit {
     }
     // post the changes
     this.articlesService.save(this.article).subscribe(
-      article => this.router.navigateByUrl('/'),
+      article => {
+        this.router.navigateByUrl('/');
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: `Your article has been ${action}`,
+          showConfirmButton: false,
+          timer: 1500
+        });
+      },
       err => {
         this.errors = err;
         this.isSubmitting = false;

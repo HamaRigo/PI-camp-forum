@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import Swal from 'sweetalert2';
+
 import {
   Article,
   Comment,
@@ -56,14 +58,34 @@ export class ArticleComponent implements OnInit {
   }
 
   deleteArticle() {
-    this.isDeleting = true;
-
-    this.articlesService.destroy(this.article.id)
-      .subscribe(
+    Swal.fire({
+      title: 'Are you sure ?',
+      text: "You won't be able to revert this !",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.isDeleting = true;
+    
+        this.articlesService.destroy(this.article.id).subscribe(
         success => {
           this.router.navigateByUrl('/');
-        }
+          this.isDeleting = false;
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Your article has been deleted',
+            showConfirmButton: false,
+            timer: 1500
+          });
+        },
+        err => this.isDeleting = false,
       );
+      }
+    });
   }
 
   addComment() {
@@ -82,6 +104,13 @@ export class ArticleComponent implements OnInit {
           this.comments.unshift(comment);
           this.commentControl.reset('');
           this.isSubmitting = false;
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Your comment has been saved',
+            showConfirmButton: false,
+            timer: 1500
+          });
         },
         errors => {
           this.isSubmitting = false;
@@ -95,6 +124,13 @@ export class ArticleComponent implements OnInit {
       .subscribe(
         success => {
           this.comments = this.comments.filter((item) => item !== comment);
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Your comment has been deleted',
+            showConfirmButton: false,
+            timer: 1500
+          });
         }
       );
   }
@@ -104,6 +140,13 @@ export class ArticleComponent implements OnInit {
       .subscribe(
         editedComment => {
           Object.assign(comment, editedComment);
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Your comment has been updated',
+            showConfirmButton: false,
+            timer: 1500
+          });
         }
       );
   }
