@@ -1,5 +1,6 @@
 package tn.esprit.tunisiacampbackend.RestControllers;
 
+import tn.esprit.tunisiacampbackend.DAO.DTO.UserDTO;
 import tn.esprit.tunisiacampbackend.DAO.Entities.User;
 import tn.esprit.tunisiacampbackend.DAO.Repositories.UserRepository;
 import tn.esprit.tunisiacampbackend.Services.UserService;
@@ -57,7 +58,7 @@ public class ConnectionController {
     }
 
     @GetMapping(value = "/defaultUser")
-    public ResponseEntity<User> defaultUser() {
-        return new ResponseEntity<>(this.userService.getdefaultuser(), HttpStatus.OK);
+    public ResponseEntity<UserDTO> defaultUser() {
+        return new ResponseEntity<>(this.userService.getDefaultUser(), HttpStatus.OK);
     }
 }

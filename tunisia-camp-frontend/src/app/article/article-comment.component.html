@@ -1,22 +1,37 @@
 <div class="card">
-  <div class="card-block">
-    <p class="card-text">
-      {{ comment.content }}
-    </p>
-  </div>
-  <div class="card-footer">
-<!--    <a class="comment-author" [routerLink]="['/profile', comment.user.username]">-->
-<img [src]="comment.user.image" class="comment-author-img" />
-<!--    </a>-->
-    &nbsp;
-<!--    <a class="comment-author" [routerLink]="['/profile', comment.user.username]">-->
-      {{ comment.user.username }}
-<!--    </a>-->
-    <span class="date-posted">
-      {{ comment.dateTimeOfComment }}
-    </span>
-    <span class="mod-options" [hidden]="!canModify">
-      <i class="ion-trash-a" (click)="deleteClicked()"></i>
-    </span>
-  </div>
+  <form [formGroup]="editCommentForm" (ngSubmit)="editHandled()">
+    <div class="card-block">
+      <fieldset [disabled]="isSubmitting">
+        <textarea 
+          [hidden]="!isEditing"
+          class="form-control"
+          placeholder="Write a comment..."
+          rows="3"
+          formControlName="content"
+        ></textarea>
+      </fieldset>
+      <p [hidden]="isEditing" class="card-text">
+        {{ comment.content }}
+      </p>
+    </div>
+    <div class="card-footer">
+      <img [src]="comment.user.image" class="comment-author-img" />
+      &nbsp;
+        {{ comment.user.username }}
+      <span class="date-posted">
+        {{ comment.dateTimeOfComment | date: 'dd.MM.YYYY, H:mm' }}
+      </span>
+
+      <span class="mod-options" [hidden]="!canModify || isEditing">
+        <i class="ion-edit" (click)="editClicked(comment)"></i>
+        <i class="ion-trash-a" (click)="deleteClicked()"></i>
+      </span>
+
+      <span class="mod-options">
+        <button class="btn btn-sm btn-primary" type="submit" [disabled]="isSubmitting" [hidden]="!isEditing">
+          Edit Comment
+        </button>
+      </span>
+    </div>
+  </form>
 </div>

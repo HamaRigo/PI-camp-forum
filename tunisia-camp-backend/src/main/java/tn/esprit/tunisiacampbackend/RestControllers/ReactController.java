@@ -9,10 +9,10 @@ import tn.esprit.tunisiacampbackend.DAO.Entities.React;
 import tn.esprit.tunisiacampbackend.Services.ReactService;
 
 import java.util.Collection;
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-@RequestMapping("/api/reactions")
+@RequestMapping("/reactions")
 public class ReactController {
     private final ReactService reactService;
 
@@ -22,20 +22,13 @@ public class ReactController {
     }
 
     @PostMapping
-    public ReactDto createReaction(@RequestBody React reaction) {
-        return reactService.create(reaction);
+    public ResponseEntity<ReactDto> createReaction(@RequestBody React reaction) {
+        return new ResponseEntity<>(reactService.create(reaction), HttpStatus.OK);
     }
-
-    @GetMapping("/post/{id}")
-    public ResponseEntity<Collection<ReactDto>> getReactionsByPostId(@PathVariable final Long id) {
-        return new ResponseEntity<>(this.reactService.getAllByPostId(id), HttpStatus.OK);
-    }
-
 
     @PutMapping
     public ResponseEntity<ReactDto> updateReaction(@RequestBody React react) {
-        ReactDto updatedReaction = reactService.update(react);
-        return ResponseEntity.ok(updatedReaction);
+        return new ResponseEntity<>(reactService.update(react), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

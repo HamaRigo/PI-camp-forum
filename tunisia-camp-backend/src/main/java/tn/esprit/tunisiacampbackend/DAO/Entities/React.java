@@ -25,8 +25,7 @@ public class React {
     @ManyToOne(optional = false)
     private User user;
 
-    @NotNull
-    @ManyToOne(optional = false, fetch = FetchType.LAZY,  cascade = CascadeType.MERGE)
     @JsonIgnoreProperties("reacts")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Post post;
 }

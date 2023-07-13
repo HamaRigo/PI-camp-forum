@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Article, ArticlesService } from '../core';
+import { Article, ArticlesService, UserService } from '../core';
 
 @Component({
   selector: 'app-editor-page',
@@ -17,6 +17,7 @@ export class EditorComponent implements OnInit {
 
   constructor(
     private articlesService: ArticlesService,
+    private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
     private fb: UntypedFormBuilder
@@ -44,9 +45,15 @@ export class EditorComponent implements OnInit {
 
     // update the model
     this.updateArticle(this.articleForm.value);
-    console.log(this.article);
-    // console.log(this.articleForm.value);
 
+    // new post => assign current user to post
+    if(this.article.user == null) {
+      this.userService.currentUser.subscribe(
+        (userData) => {
+          this.article.user = userData;
+        }
+      );
+    }
     // post the changes
     this.articlesService.save(this.article).subscribe(
       article => this.router.navigateByUrl('/'),

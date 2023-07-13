@@ -3,8 +3,7 @@
     <div class="container">
       <h1>{{ article.title }}</h1>
       <app-article-meta [article]="article">
-          <span
-            [hidden]="!canModify">
+        <span [hidden]="!canModify">
           <a class="btn btn-sm btn-outline-secondary"
              [routerLink]="['/editor', article.id]">
             <i class="ion-edit"></i> Edit Article
@@ -17,14 +16,13 @@
           </button>
         </span>
 
-<!--        <span [hidden]="canModify">-->
-<!--          <app-favorite-button-->
-<!--            [article]="article"-->
-<!--            (toggle)="onToggleFavorite($event)">-->
-<!--            {{ article.favorited ? 'Unfavorite' : 'Favorite' }} Article <span class="counter">({{ article.favoritesCount }})</span>-->
-<!--          </app-favorite-button>-->
-<!--        </span>-->
-
+        <app-favorite-button
+          [article]="article"
+          (toggle)="onToggleFavorite($event)"
+          class="pull-xs-right" >
+          {{article.ratingPoints}}
+          Rate
+        </app-favorite-button>
       </app-article-meta>
     </div>
   </div>
@@ -33,17 +31,13 @@
 
     <div class="row article-content">
       <div class="col-md-12">
-
         <div [innerHTML]="article.content | markdown"></div>
-
       </div>
     </div>
 
     <hr />
-
     <div class="article-actions">
       <app-article-meta [article]="article">
-
           <span [hidden]="!canModify">
           <a class="btn btn-sm btn-outline-secondary"
              [routerLink]="['/editor', article.id]">
@@ -57,17 +51,15 @@
           </button>
         </span>
 
-<!--        <span [hidden]="canModify">-->
-<!--          <app-favorite-button-->
-<!--            [article]="article"-->
-<!--            (toggle)="onToggleFavorite($event)">-->
-<!--            {{ article.favorited ? 'Unfavorite' : 'Favorite' }} Article <span class="counter">({{ article.favoritesCount }})</span>-->
-<!--          </app-favorite-button>-->
-<!--        </span>-->
-
+        <app-favorite-button
+          [article]="article"
+          (toggle)="onToggleFavorite($event)"
+          class="pull-xs-right" >
+          {{article.ratingPoints}}
+          Rate
+        </app-favorite-button>
       </app-article-meta>
     </div>
-
     
     <div class="row">
       <div class="col-xs-12 col-md-8 offset-md-2">
@@ -94,12 +86,11 @@
         <app-article-comment
           *ngFor="let comment of comments"
           [comment]="comment"
+          [post]="article"
+          (editComment)="onEditComment(comment)"
           (deleteComment)="onDeleteComment(comment)">
         </app-article-comment>
-<!--                  </div>-->
-
       </div>
     </div>
-
   </div>
 </div>

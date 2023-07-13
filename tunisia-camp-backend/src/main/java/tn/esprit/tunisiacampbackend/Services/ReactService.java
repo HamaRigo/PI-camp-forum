@@ -8,13 +8,7 @@ import tn.esprit.tunisiacampbackend.DAO.Entities.React;
 import tn.esprit.tunisiacampbackend.DAO.Repositories.ReactRepo;
 import tn.esprit.tunisiacampbackend.exception.ReactException;
 
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
-
 public class ReactService {
 
     private final ReactRepo reactrepo;
@@ -25,17 +19,7 @@ public class ReactService {
     }
 
     public ReactDto create(final React react) {
-        this.reactrepo.save(react);
-        return ToDtoConverter.reactToDto(react);
-    }
-
-    public List<ReactDto> getAllByPostId(final Long id) {
-        Collection<React> foundReacts = this.reactrepo.findByPostId(id);
-
-        return foundReacts.stream()
-                .sorted(Comparator.comparing(React::getType).reversed())
-                .map(ToDtoConverter::reactToDto)
-                .collect(Collectors.toList());
+        return ToDtoConverter.reactToDto(this.reactrepo.save(react));
     }
 
     //    @PreAuthorize("hasRole('USER')")
@@ -43,13 +27,11 @@ public class ReactService {
         this.reactrepo.findById(react.getId()).orElseThrow(
                 () -> new ReactException("Can't update. React not found!")
         );
-        this.reactrepo.save(react);
-        return ToDtoConverter.reactToDto(react);
+        return ToDtoConverter.reactToDto(this.reactrepo.save(react));
     }
 
     //    @PreAuthorize("hasRole('USER')")
     public void delete(final Long id) {
         this.reactrepo.deleteById(id);
     }
-
 }

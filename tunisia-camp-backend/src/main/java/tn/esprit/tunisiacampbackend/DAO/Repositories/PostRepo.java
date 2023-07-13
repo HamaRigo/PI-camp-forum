@@ -8,7 +8,7 @@ import tn.esprit.tunisiacampbackend.DAO.Entities.Post;
 import java.util.Collection;
 
 public interface PostRepo extends JpaRepository<Post, Long> {
-    @Query("SELECT p from  Post p ")
+    @Query("SELECT p from  Post p")
     Collection<Post> findAllSortedByDateTimeOfPost();
 
     Post findFirstByOrderByIdDesc();

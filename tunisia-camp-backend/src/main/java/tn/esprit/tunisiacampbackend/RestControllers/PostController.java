@@ -10,20 +10,17 @@ import tn.esprit.tunisiacampbackend.DAO.DTO.PostDto;
 import tn.esprit.tunisiacampbackend.DAO.Entities.Post;
 import tn.esprit.tunisiacampbackend.DAO.Entities.User;
 import tn.esprit.tunisiacampbackend.Services.PostService;
-import tn.esprit.tunisiacampbackend.Services.UserService;
 import tn.esprit.tunisiacampbackend.Services.UserServiceImpl;
+import tn.esprit.tunisiacampbackend.exception.PostException;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-
 @RestController
-
 @RequestMapping("/articles")
 public class PostController {
-
     private final PostService postService;
     private final UserServiceImpl userService;
 
@@ -33,39 +30,46 @@ public class PostController {
         this.userService = userService;
     }
 
-    @PostMapping
-    public ResponseEntity<PostDto> createPost(@RequestBody final Post post) {
-        User user = userService.getdefaultuser();
-        System.out.println(user);
-        post.setUser(user);
-        System.out.println(post);
-        return new ResponseEntity<>(this.postService.create(post), HttpStatus.OK);
-    }
-
     @GetMapping
-    public ResponseEntity<HashMap> getAllPosts() {
-//        return new ResponseEntity<>(this.postService.getAll(), HttpStatus.OK);
+    public ResponseEntity<HashMap<String,Object>> getAllPosts() {
         HashMap<String,Object> map = new HashMap<>();
         map.put("articles", this.postService.getAll());
         map.put("articlesCount", this.postService.getAll().size());
         return new ResponseEntity<>( map ,HttpStatus.OK);
-
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PostDto> getPostById(@PathVariable final Long id) {
-        return new ResponseEntity<>(this.postService.getById(id), HttpStatus.OK);
+    public ResponseEntity<?> getPostById(@PathVariable final Long id) {
+        try {
+            return new ResponseEntity<>(this.postService.getById(id), HttpStatus.OK);
+        } catch (PostException exception) {
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<PostDto> createPost(@RequestBody final Post post) {
+        System.out.println(post);
+        /*if(post.getUser() == null) {
+            User user = userService.getDefaultUser();
+            post.setUser(user);
+        }*/
+        return new ResponseEntity<>(this.postService.create(post), HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<PostDto> updatePost(@RequestBody final Post post) {
-        return new ResponseEntity<>(this.postService.update(post), HttpStatus.OK);
+    public ResponseEntity<?> updatePost(@RequestBody final Post post) {
+        try {
+            return new ResponseEntity<>(this.postService.update(post), HttpStatus.OK);
+        } catch (PostException exception) {
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deletePostById(@PathVariable final Long id) {
+    public ResponseEntity<Void> deletePostById(@PathVariable final Long id) {
         this.postService.delete(id);
-        return new ResponseEntity(HttpStatus.OK);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -75,9 +79,12 @@ public class PostController {
     }
 
     @PutMapping("/{id}/rate")
-    public ResponseEntity<PostDto> ratePost(@PathVariable final Long id, @RequestBody final Integer buttonState) {
-        this.postService.rate(id, buttonState);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<?> ratePost(@PathVariable final Long id, @RequestBody final Integer buttonState) {
+        try {
+            return new ResponseEntity<>(this.postService.rate(id, buttonState), HttpStatus.OK);
+        } catch (PostException exception) {
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/page/{pageNumber}")

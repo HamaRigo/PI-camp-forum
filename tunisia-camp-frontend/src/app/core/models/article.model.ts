@@ -1,20 +1,25 @@
+import { Comment } from './comment.model';
 import { Profile } from './profile.model';
+import { React } from './react.model';
+import { User } from './user.model';
 
 export interface Article {
-  slug?: string;
-  id: string;
+  id: number;
   title: string;
-  description?: string;
   content: string;
-  body?: string;
-  createdAt?: string;
   dateTimeOfPost: string;
   imageUrl: string;
+  ratingPoints: number;
+  user: User;
+  comments: Comment[];
+  reacts: React[];
+
+  slug?: string;
+  description?: string;
+  body?: string;
+  createdAt?: string;
   updatedAt?: string;
   favorited?: boolean;
   favoritesCount?: number;
-  ratingPoints: number;
-
   author?: Profile;
-  user: Profile;
 }

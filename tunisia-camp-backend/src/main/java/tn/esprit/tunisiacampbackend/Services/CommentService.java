@@ -6,13 +6,7 @@ import tn.esprit.tunisiacampbackend.DAO.DTO.CommentDto;
 import tn.esprit.tunisiacampbackend.DAO.DTO.ToDtoConverter;
 import tn.esprit.tunisiacampbackend.DAO.Entities.Comment;
 import tn.esprit.tunisiacampbackend.DAO.Repositories.CommentRepo;
-import tn.esprit.tunisiacampbackend.DAO.Repositories.PostRepo;
 import tn.esprit.tunisiacampbackend.exception.CommentException;
-
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CommentService {
@@ -25,17 +19,7 @@ public class CommentService {
     }
 
     public CommentDto create(final Comment comment) {
-        this.commentRepository.save(comment);
-        return ToDtoConverter.commentToDto(comment);
-    }
-
-    public List<CommentDto> getAllByPostId(final Long postId) {
-        Collection<Comment> foundComments = this.commentRepository.findByPostId(postId);
-
-        return foundComments.stream()
-                .sorted(Comparator.comparing(Comment::getDateTimeOfComment).reversed())
-                .map(ToDtoConverter::commentToDto)
-                .collect(Collectors.toList());
+        return ToDtoConverter.commentToDto(this.commentRepository.save(comment));
     }
 
 //    @PreAuthorize("hasRole('USER')")
@@ -43,8 +27,7 @@ public class CommentService {
         this.commentRepository.findById(comment.getId()).orElseThrow(
                 () -> new CommentException("Can't update. Comment not found!")
         );
-        this.commentRepository.save(comment);
-        return ToDtoConverter.commentToDto(comment);
+        return ToDtoConverter.commentToDto(this.commentRepository.save(comment));
     }
 
 //    @PreAuthorize("hasRole('USER')")

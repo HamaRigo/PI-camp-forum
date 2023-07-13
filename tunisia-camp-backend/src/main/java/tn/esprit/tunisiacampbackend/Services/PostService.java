@@ -7,9 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.tunisiacampbackend.DAO.DTO.PostDto;
 import tn.esprit.tunisiacampbackend.DAO.DTO.ToDtoConverter;
-import tn.esprit.tunisiacampbackend.DAO.Entities.Comment;
 import tn.esprit.tunisiacampbackend.DAO.Entities.Post;
-import tn.esprit.tunisiacampbackend.DAO.Repositories.CommentRepo;
 import tn.esprit.tunisiacampbackend.DAO.Repositories.PostRepo;
 import tn.esprit.tunisiacampbackend.exception.PostException;
 
@@ -23,20 +21,11 @@ import java.util.stream.Collectors;
 @Service
 public class PostService {
     private final PostRepo postRepository;
-    private final CommentRepo commentRepository;
 
     @Autowired
-    public PostService(final PostRepo postRepository, final CommentRepo commentRepository)
+    public PostService(final PostRepo postRepository)
     {
         this.postRepository = postRepository;
-        this.commentRepository = commentRepository;
-
-    }
-
-    //    @PreAuthorize("hasRole('USER')")
-    public PostDto create(final Post post) {
-        this.postRepository.save(post);
-        return ToDtoConverter.postToDto(post);
     }
 
     public Collection<PostDto> getAll() {
@@ -48,34 +37,32 @@ public class PostService {
 
     public PostDto getById(final Long id) {
         Post post = this.postRepository.findById(id).orElseThrow(
-                () -> new PostException("Can't get. Post not found!"));
+                () -> new PostException("Can't get. Post not found!")
+        );
         return ToDtoConverter.postToDto(post);
     }
 
     public Collection<PostDto> getAllPaginated(final Integer pageNumber) {
         Integer index = pageNumber - 1;
-        Page<Post> posts = (Page<Post>) this.postRepository.findAll(PageRequest.of(index, 20));
+        Page<Post> posts = this.postRepository.findAll(PageRequest.of(index, 20));
         return posts.stream().map(ToDtoConverter::postToDto).collect(Collectors.toList());
     }
 
+    //    @PreAuthorize("hasRole('USER')")
+    public PostDto create(final Post post) {
+        return ToDtoConverter.postToDto(this.postRepository.save(post));
+    }
 
 //    @PreAuthorize("hasRole('USER')")
     public PostDto update(final Post post) {
         this.postRepository.findById(post.getId()).orElseThrow(
                 () -> new PostException("Can't update. Post not found!")
         );
-        this.postRepository.save(post);
-        return ToDtoConverter.postToDto(post);
+        return ToDtoConverter.postToDto(this.postRepository.save(post));
     }
 
 //    @PreAuthorize("hasRole('USER')")
     public void delete(final Long id) {
-        Collection<Comment> relatedComments = commentRepository.findByPostId(id);
-        if (relatedComments.size() > 0) {
-            for (Comment comment : relatedComments) {
-                commentRepository.deleteById(comment.getId());
-            }
-        }
         this.postRepository.deleteById(id);
     }
 
@@ -92,14 +79,16 @@ public class PostService {
     }
 
 //    @PreAuthorize("hasRole('USER')")
-    public void rate(final Long id, final Integer buttonState) {
-        Post foundPost = postRepository.findById(id).get();
+    public PostDto rate(final Long id, final Integer buttonState) {
+        Post foundPost = this.postRepository.findById(id).orElseThrow(
+                () -> new PostException("Can't rate. Post not found!")
+        );
         if (buttonState.equals(0)) {
             foundPost.setRatingPoints(foundPost.getRatingPoints() - 1);
         } else if (buttonState.equals(1)) {
             foundPost.setRatingPoints(foundPost.getRatingPoints() + 1);
         }
-        postRepository.save(foundPost);
+        return ToDtoConverter.postToDto(postRepository.save(foundPost));
     }
 
 //    @SuppressWarnings("unchecked")

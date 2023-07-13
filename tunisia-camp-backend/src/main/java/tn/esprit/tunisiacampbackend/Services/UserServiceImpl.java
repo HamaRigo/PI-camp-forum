@@ -1,5 +1,6 @@
 package tn.esprit.tunisiacampbackend.Services;
 
+import tn.esprit.tunisiacampbackend.DAO.DTO.ToDtoConverter;
 import tn.esprit.tunisiacampbackend.DAO.DTO.UserDTO;
 import tn.esprit.tunisiacampbackend.exception.UsernameAlreadyUsedException;
 import tn.esprit.tunisiacampbackend.DAO.Entities.User;
@@ -7,14 +8,22 @@ import tn.esprit.tunisiacampbackend.DAO.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service("userService")
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userDao;
-    public User getdefaultuser() {
-        return userDao.findById(1L).orElse(null);
+
+    public UserDTO getDefaultUser() {
+        User defaultUser = userDao.findById(1L).orElse(null);
+        if(defaultUser != null)
+            return ToDtoConverter.userToDto(defaultUser);
+        else
+            return null;
     }
+
     @Override
     public User connect(User user) throws UsernameAlreadyUsedException {
         User dbUser = userDao.findByUsername(user.getUsername());
@@ -47,5 +56,4 @@ public class UserServiceImpl implements UserService {
         dbUser.setConnected(false);
         return userDao.save(dbUser);
     }
-
 }

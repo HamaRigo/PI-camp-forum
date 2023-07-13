@@ -2,6 +2,7 @@ package tn.esprit.tunisiacampbackend.DAO.Entities;
 
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import java.io.Serializable;
@@ -16,11 +17,10 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User implements Serializable{
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-
 
     @Column(unique = true)
     private String username;
@@ -34,20 +34,21 @@ public class User implements Serializable{
     String password;
     int phoneNumber;
     String image;
+
     @Enumerated(EnumType.STRING)
     Role role;
 
-    @JsonIgnore
-    @OneToMany(mappedBy="user")
+    @JsonIgnoreProperties("user")
+    @OneToMany(mappedBy="user", orphanRemoval = true, cascade = CascadeType.REMOVE)
     private List<Post> posts;
 
-    @JsonIgnore
+    /*@JsonIgnore
     @OneToMany(mappedBy="user")
-    private List<React> reacts;
+    private List<React> reacts;*/
 
-    @JsonIgnore
+    /*@JsonIgnore
     @OneToMany(mappedBy="user")
-    private List<Comment> comments;
+    private List<Comment> comments;*/
 
 //    @OneToMany(mappedBy = "user")
 //    List<Order> orders ;
@@ -60,30 +61,6 @@ public class User implements Serializable{
 
     public User(String username) {
         this.username = username;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public Boolean getConnected() {
-        return connected;
-    }
-
-    public void setConnected(Boolean connected) {
-        this.connected = connected;
     }
 
     @Override

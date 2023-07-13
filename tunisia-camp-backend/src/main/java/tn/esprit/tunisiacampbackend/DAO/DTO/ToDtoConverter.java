@@ -6,14 +6,16 @@ import tn.esprit.tunisiacampbackend.DAO.Entities.Post;
 import tn.esprit.tunisiacampbackend.DAO.Entities.React;
 import tn.esprit.tunisiacampbackend.DAO.Entities.User;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public final class ToDtoConverter {
 
     public static ReactDto reactToDto(final React react) {
         return new ReactDto(
                 react.getId(),
                 react.getType(),
-                react.getUser()
-//                react.getPost()
+                userToDto(react.getUser())
         );
     }
 
@@ -22,12 +24,25 @@ public final class ToDtoConverter {
                 comment.getId(),
                 comment.getContent(),
                 comment.getDateTimeOfComment(),
-                comment.getUser()
-//                comment.getPost()
+                userToDto(comment.getUser())
         );
     }
 
     public static PostDto postToDto(final Post post) {
+        List<CommentDto> commentDtos = new ArrayList<>();
+        List<ReactDto> reactDtos = new ArrayList<>();
+        if(post.getComments() != null) {
+            for (Comment comment : post.getComments()) {
+                CommentDto commentDto = commentToDto(comment);
+                commentDtos.add(commentDto);
+            }
+        }
+        if(post.getReacts() != null) {
+            for (React react : post.getReacts()) {
+                ReactDto reactDto = reactToDto(react);
+                reactDtos.add(reactDto);
+            }
+        }
         return new PostDto(
                 post.getId(),
                 post.getTitle(),
@@ -35,10 +50,9 @@ public final class ToDtoConverter {
                 post.getDateTimeOfPost(),
                 post.getImageUrl(),
                 post.getRatingPoints(),
-//                userToDto(post.getUser()),
-                post.getUser(),
-                post.getReacts(),
-                post.getComments()
+                userToDto(post.getUser()),
+                reactDtos,
+                commentDtos
         );
     }
 
@@ -51,11 +65,7 @@ public final class ToDtoConverter {
                 user.getPassword(),
                 user.getPhoneNumber(),
                 user.getImage(),
-                user.getRole(),
-                user.getComments(),
-                user.getReacts(),
-                user.getPosts()
+                user.getRole()
         );
     }
-
 }

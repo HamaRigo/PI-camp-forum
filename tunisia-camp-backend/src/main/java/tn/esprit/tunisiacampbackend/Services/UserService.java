@@ -1,5 +1,6 @@
 package tn.esprit.tunisiacampbackend.Services;
 
+import tn.esprit.tunisiacampbackend.DAO.DTO.UserDTO;
 import tn.esprit.tunisiacampbackend.exception.UsernameAlreadyUsedException;
 import tn.esprit.tunisiacampbackend.DAO.Entities.User;
 
@@ -25,5 +26,5 @@ public interface UserService {
      */
     User disconnect(User user);
 
-    User getdefaultuser();
+    UserDTO getDefaultUser();
 }

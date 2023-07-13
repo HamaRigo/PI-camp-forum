@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -24,15 +25,15 @@ public class Comment {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @UpdateTimestamp
     @NotNull
-    private LocalDateTime dateTimeOfComment = LocalDateTime.now();
+    private LocalDateTime dateTimeOfComment;
 
     @NotNull
     @ManyToOne(optional = false)
     private User user;
 
-    @NotNull
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JsonIgnoreProperties("comments")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Post post;
 }

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 
-import { Comment, User, UserService } from '../core';
+import { Article, Comment, UserService } from '../core';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-article-comment',
@@ -8,27 +9,52 @@ import { Comment, User, UserService } from '../core';
 })
 export class ArticleCommentComponent implements OnInit {
   constructor(
-    private userService: UserService
-  ) {}
+    private userService: UserService,
+    private fb: UntypedFormBuilder
+  ) {
+    this.editCommentForm = this.fb.group({
+      id: null,
+      content: null,  
+      user: null,
+      post: null,
+    });
+  }
 
   @Input() comment: Comment;
+  @Input() post: Article;
+  @Output() editComment = new EventEmitter<boolean>();
   @Output() deleteComment = new EventEmitter<boolean>();
 
+  editCommentForm: UntypedFormGroup;
   canModify: boolean;
+  isEditing: boolean;
+  isSubmitting: boolean;
 
   ngOnInit() {
-    console.log('');
     // Load the current user's data
-    // this.userService.currentUser.subscribe(
-    //   (userData: User) => {
-        // this.canModify = (userData.username === this.comment.user.username);
-      // }
-    // );
+    this.userService.currentUser.subscribe(
+      (userData) => {
+        this.canModify = (userData.id === this.comment.user.id);
+      }
+    );
   }
 
   deleteClicked() {
     this.deleteComment.emit(true);
   }
+  
+  editClicked(comment: Comment) {
+    this.editCommentForm.patchValue(comment);
+    this.isEditing = true;
+  }
 
-
+  editHandled() {
+    this.isSubmitting = true;
+    Object.assign(this.comment, this.editCommentForm.value);
+    delete this.post.comments;
+    this.comment.post = this.post;
+    this.editComment.emit(true);
+    this.isSubmitting = false;
+    this.isEditing = false;
+  }
 }

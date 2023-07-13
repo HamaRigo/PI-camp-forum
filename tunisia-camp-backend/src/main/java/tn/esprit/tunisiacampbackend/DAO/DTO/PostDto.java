@@ -3,9 +3,6 @@ package tn.esprit.tunisiacampbackend.DAO.DTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import tn.esprit.tunisiacampbackend.DAO.Entities.Comment;
-import tn.esprit.tunisiacampbackend.DAO.Entities.React;
-import tn.esprit.tunisiacampbackend.DAO.Entities.User;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,10 +23,9 @@ public class PostDto {
 
     private Integer ratingPoints;
 
+    private UserDTO user;
 
-    private User user;
+    private List<ReactDto> reacts;
 
-    private List<React> reacts;
-
-    private List<Comment> comments;
+    private List<CommentDto> comments;
 }

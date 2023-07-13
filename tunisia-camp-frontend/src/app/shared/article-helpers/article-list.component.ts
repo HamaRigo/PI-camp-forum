@@ -44,9 +44,7 @@ export class ArticleListComponent {
 
     this.articlesService.query(this.query)
     .subscribe(data => {
-      // console.log(data);
       this.loading = false;
-      // this.results = data.articles;
       this.results = data.articles;
 
       // Used from http://www.jstips.co/en/create-range-0...n-easily-using-one-line/

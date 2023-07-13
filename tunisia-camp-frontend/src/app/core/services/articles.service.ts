@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 
 import { ApiService } from './api.service';
 import { Article, ArticleListConfig } from '../models';
-import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ArticlesService {
@@ -25,37 +24,25 @@ export class ArticlesService {
     );
   }
 
-  get(slug): Observable<Article> {
-    return this.apiService.get('/articles/' + slug);
-      // .pipe(map(data => data.article));
+  get(id: number | string): Observable<Article> {
+    return this.apiService.get('/articles/' + id);
   }
 
-  destroy(slug) {
-    return this.apiService.delete('/articles/' + slug);
-  }
-
-  save(article): Observable<Article> {
+  save(article: Article): Observable<Article> {
     // If we're updating an existing article
     if (article.id) {
-      return this.apiService.put('/articles', article)
-        .pipe(map(data => data.article));
+      return this.apiService.put('/articles', article);
     // Otherwise, create a new article
     } else {
-      return this.apiService.post('/articles/', article);
-        // .pipe(map(data => data.article));
+      return this.apiService.post('/articles', article);
     }
   }
 
-  favorite(slug): Observable<Article> {
-    console.log(slug);
-
-    return this.apiService.put('/articles/' + slug + '/rate',  1);
-    // return this.apiService.get('/articles/' + slug );
+  rate(id: number): Observable<Article> {
+    return this.apiService.put('/articles/' + id + '/rate',  1);
   }
 
-  unfavorite(slug): Observable<Article> {
-    return this.apiService.delete('/articles/' + slug + '/favorite');
+  destroy(id: number) {
+    return this.apiService.delete('/articles/' + id);
   }
-
-
 }

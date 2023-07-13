@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
-import { Article } from '../../core';
+import { Article, UserService } from '../../core';
 
 @Component({
   selector: 'app-article-preview',
@@ -10,12 +10,8 @@ export class ArticlePreviewComponent {
   @Input() article: Article;
 
   onToggleFavorite(favorited: boolean) {
-    this.article['favorited'] = favorited;
-
     if (favorited) {
-      this.article['favoritesCount']++;
-    } else {
-      this.article['favoritesCount']--;
+      this.article.ratingPoints++;
     }
   }
 }

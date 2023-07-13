@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.stereotype.Indexed;
 
 import javax.persistence.*;
@@ -32,25 +33,25 @@ public class Post {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @UpdateTimestamp
     @NotNull
-    private LocalDateTime dateTimeOfPost = LocalDateTime.now();
+    private LocalDateTime dateTimeOfPost;
 
     private String imageUrl;
 
     @NotNull
     @Min(0)
-    private Integer ratingPoints;
+    private Integer ratingPoints = 0;
 
-
-    @NotNull
-    @ManyToOne(optional = false)
+    @JsonIgnoreProperties("posts")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private User user;
 
-    @OneToMany(mappedBy="post", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("post")
+    @OneToMany(mappedBy="post", cascade = CascadeType.REMOVE)
     private List<React> reacts;
 
-    @OneToMany(mappedBy="post", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Comment> comments;
 }

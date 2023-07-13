@@ -4,13 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import {
   Article,
-  ArticlesService,
   Comment,
-  CommentsService,
   User,
+  ArticlesService,
+  CommentsService,
   UserService
 } from '../core';
-import {logging} from 'protractor';
 
 @Component({
   selector: 'app-article-page',
@@ -35,46 +34,27 @@ export class ArticleComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // console.log(this.route.snapshot.paramMap.get('slug'));
-    // Retreive the prefetched article
-    // this.route.data.subscribe(
-    //   (data: { article: Article }) => {
-    //     console.log(data);
-    //     this.article = data.article;
-    //
-    //     // Load the comments on this article
-    //     this.populateComments();
-    //   }
-    // );
     const id = this.route.snapshot.paramMap.get('slug');
-    this.articlesService.get(id).subscribe(
-      (data) => {
-        this.article = data ;
-        this.populateComments();
-        if(this.article.user.id === 1) {
-          this.canModify = true;
-        }
-    }
-    );
     this.userService.currentUser.subscribe(
       (userData) => {
         this.currentUser = userData;
       }
     );
+    this.articlesService.get(id).subscribe(
+      (data) => {
+        this.article = data;
+        this.comments = data.comments;
+        if(this.article.user.id == this.currentUser.id) {
+          this.canModify = true;
+        }
+    }
+    );
   }
 
   onToggleFavorite(favorited: boolean) {
-    this.article.favorited = favorited;
-
     if (favorited) {
-      this.article.favoritesCount++;
-    } else {
-      this.article.favoritesCount--;
+      this.article.ratingPoints++;
     }
-  }
-
-  onToggleFollowing(following: boolean) {
-    this.article.author.following = following;
   }
 
   deleteArticle() {
@@ -88,19 +68,18 @@ export class ArticleComponent implements OnInit {
       );
   }
 
-  populateComments() {
-    this.commentsService.getAll(this.article.id)
-      .subscribe(comments => this.comments = comments);
-  }
-
   addComment() {
     this.isSubmitting = true;
     this.commentFormErrors = {};
 
-    const commentBody = this.commentControl.value;
-    this.commentsService
-      .add(this.article.id, commentBody)
-      .subscribe(
+    const newComment : Comment = {
+      content: this.commentControl.value,
+      user: this.currentUser,
+      post: this.article,
+    };
+
+    this.commentsService.add(newComment)
+    .subscribe(
         comment => {
           this.comments.unshift(comment);
           this.commentControl.reset('');
@@ -114,7 +93,7 @@ export class ArticleComponent implements OnInit {
   }
 
   onDeleteComment(comment) {
-    this.commentsService.destroy(comment.id, this.article.id)
+    this.commentsService.destroy(comment.id)
       .subscribe(
         success => {
           this.comments = this.comments.filter((item) => item !== comment);
@@ -122,4 +101,12 @@ export class ArticleComponent implements OnInit {
       );
   }
 
+  onEditComment(comment) {
+    this.commentsService.edit(comment)
+      .subscribe(
+        editedComment => {
+          Object.assign(comment, editedComment);
+        }
+      );
+  }
 }

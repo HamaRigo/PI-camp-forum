@@ -1,7 +1,18 @@
+import { Article } from "./article.model";
+
 export interface User {
-  email: string;
-  token?: string;
+  id: number;
   username: string;
-  bio?: string;
+  connected: boolean;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  phoneNumber: number;
   image: string;
+  role: string;
+  posts: Article[];
+
+  token?: string;
+  bio?: string;
 }

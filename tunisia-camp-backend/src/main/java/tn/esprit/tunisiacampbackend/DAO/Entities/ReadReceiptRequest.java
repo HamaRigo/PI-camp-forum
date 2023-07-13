@@ -1,7 +1,6 @@
 package tn.esprit.tunisiacampbackend.DAO.Entities;
 
 public class ReadReceiptRequest {
-
     private String channel;
     private String username;
 

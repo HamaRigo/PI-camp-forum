@@ -20,9 +20,6 @@ public class UserDTO {
     int phoneNumber;
     String image;
     Role role;
-    private List<Comment> comments;
-    private List<React> reacts;
-    private List<Post> posts;
 
 //    List<OrderDTO> orders ;
 //    List<FeedbackDTO> feedbackList;
