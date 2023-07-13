@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -42,11 +43,17 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public Collection<PostDto> getMostLiked() {
-        Collection<Post> posts = this.postRepository.findAllSortedByDateTimeOfPost();
+    public Collection<PostDto> getMostLiked(final Integer limit, final Long userId) {
+        Collection<Post> posts;
+        if(userId != null)
+            posts = this.postRepository.findAllByReactsIsNotEmptyAndUserId(userId);
+        else
+            posts = this.postRepository.findAllByReactsIsNotEmpty();
         setPostsReactsCount(posts);
 
         return posts.stream()
+                .sorted(Comparator.comparing(Post::getLikesCount).reversed())
+                .limit(limit)
                 .map(ToDtoConverter::postToDto)
                 .collect(Collectors.toList());
     }

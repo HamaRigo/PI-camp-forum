@@ -25,8 +25,10 @@ export class ArticlesService {
     }
 
     console.log(params);
-
-    if(config.filters.userId != null) {
+    if(config.type == 'like') {
+      return this.apiService.get('/articles/liked', new HttpParams({ fromObject: params }));
+    }
+    else if(config.filters.userId != null) {
       return this.apiService.get('/articles/paginatedByUser', new HttpParams({ fromObject: params }));
     }
     return this.apiService.get('/articles/paginated', new HttpParams({ fromObject: params }));

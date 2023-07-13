@@ -1,19 +1,20 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { ArticleListConfig, Profile, User, UserService } from '../core';
 
 @Component({
-  selector: 'app-profile-articles',
-  templateUrl: './profile-articles.component.html'
+  selector: 'app-profile-liked',
+  templateUrl: './profile-liked.component.html'
 })
-export class ProfileArticlesComponent implements OnInit {
+export class ProfileLikedComponent implements OnInit {
   constructor(
     private userService: UserService,
   ) {}
 
   profile: Profile;
-  articlesConfig: ArticleListConfig = {
-    type: 'all',
+  LikedConfig: ArticleListConfig = {
+    type: 'like',
     filters: {}
   };
 
@@ -21,11 +22,7 @@ export class ProfileArticlesComponent implements OnInit {
     return this.userService.currentUser.subscribe((
       (userData: User) => {
         this.profile = userData;
-        this.articlesConfig = {
-          type: 'all',
-          filters: {}
-        };
-        this.articlesConfig.filters.userId = this.profile.id;
+        this.LikedConfig.filters.userId = this.profile.id;
       }
     ));
   }

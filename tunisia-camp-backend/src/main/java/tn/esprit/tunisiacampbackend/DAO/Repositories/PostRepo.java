@@ -10,9 +10,9 @@ import java.util.Collection;
 public interface PostRepo extends JpaRepository<Post, Long> {
     @Query("SELECT p from  Post p")
     Collection<Post> findAllSortedByDateTimeOfPost();
-
+    Collection<Post> findAllByReactsIsNotEmpty();
+    Collection<Post> findAllByReactsIsNotEmptyAndUserId(Long userId);
     Post findFirstByOrderByIdDesc();
-
     Page<Post> findAllByUserId(Long userId, final Pageable pageable);
     Page<Post> findAll(final Pageable pageable);
 }
