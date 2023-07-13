@@ -43,6 +43,12 @@ public class Post {
     @Min(0)
     private Integer ratingPoints = 0;
 
+    @Transient
+    private Integer likesCount;
+
+    @Transient
+    private Integer dislikesCount;
+
     @JsonIgnoreProperties("posts")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private User user;

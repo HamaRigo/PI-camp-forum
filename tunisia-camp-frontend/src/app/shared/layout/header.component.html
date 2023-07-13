@@ -21,7 +21,7 @@
 
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['/profile', currentUser.username]" routerLinkActive="active">
-          <img [src]="currentUser.image" width="30" height="30" />
+          <img [src]="currentUser.image" width="30" height="30" style="border-radius: 30px" />
           {{ currentUser.username }}
         </a>
       </li>

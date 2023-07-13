@@ -8,6 +8,7 @@ import { ArticleListComponent, ArticleMetaComponent, ArticlePreviewComponent } f
 import { FavoriteButtonComponent, FollowButtonComponent } from './buttons';
 import { ListErrorsComponent } from './list-errors.component';
 import { ShowAuthedDirective } from './show-authed.directive';
+import { ReactButtonComponent } from './buttons/react-button.component';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { ShowAuthedDirective } from './show-authed.directive';
     ArticleMetaComponent,
     ArticlePreviewComponent,
     FavoriteButtonComponent,
+    ReactButtonComponent,
     FollowButtonComponent,
     ListErrorsComponent,
     ShowAuthedDirective
@@ -32,6 +34,7 @@ import { ShowAuthedDirective } from './show-authed.directive';
     ArticlePreviewComponent,
     CommonModule,
     FavoriteButtonComponent,
+    ReactButtonComponent,
     FollowButtonComponent,
     FormsModule,
     ReactiveFormsModule,

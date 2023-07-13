@@ -23,6 +23,10 @@ public class PostDto {
 
     private Integer ratingPoints;
 
+    private Integer likesCount;
+
+    private Integer dislikesCount;
+
     private UserDTO user;
 
     private List<ReactDto> reacts;

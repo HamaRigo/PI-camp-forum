@@ -15,7 +15,7 @@
             <i class="ion-trash-a"></i> Delete Article
           </button>
         </span>
-
+        <app-react-button [article]="article"></app-react-button>
         <app-favorite-button
           [article]="article"
           (toggle)="onToggleFavorite($event)"
@@ -50,14 +50,6 @@
             <i class="ion-trash-a"></i> Delete Article
           </button>
         </span>
-
-        <app-favorite-button
-          [article]="article"
-          (toggle)="onToggleFavorite($event)"
-          class="pull-xs-right" >
-          {{article.ratingPoints}}
-          Rate
-        </app-favorite-button>
       </app-article-meta>
     </div>
     

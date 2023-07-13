@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
 const routes: Routes = [
-
   {
     // view my posts
     path: 'profile',
@@ -14,7 +13,7 @@ const routes: Routes = [
     loadChildren: () => import('./editor/editor.module').then(m => m.EditorModule)
   },
   {
-    // detailarticle
+    // details article
     path: 'article',
     loadChildren: () => import('./article/article.module').then(m => m.ArticleModule)
   }

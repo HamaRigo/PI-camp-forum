@@ -51,8 +51,9 @@ export class ArticleCommentComponent implements OnInit {
   editHandled() {
     this.isSubmitting = true;
     Object.assign(this.comment, this.editCommentForm.value);
-    delete this.post.comments;
-    this.comment.post = this.post;
+    const clonedPost = { ...this.post };
+    delete clonedPost.comments;
+    this.comment.post = clonedPost;
     this.editComment.emit(true);
     this.isSubmitting = false;
     this.isEditing = false;

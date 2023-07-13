@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.tunisiacampbackend.DAO.DTO.PostDto;
 import tn.esprit.tunisiacampbackend.DAO.Entities.Post;
-import tn.esprit.tunisiacampbackend.DAO.Entities.User;
 import tn.esprit.tunisiacampbackend.Services.PostService;
-import tn.esprit.tunisiacampbackend.Services.UserServiceImpl;
 import tn.esprit.tunisiacampbackend.exception.PostException;
 
 import java.io.IOException;
@@ -22,20 +20,32 @@ import java.util.HashMap;
 @RequestMapping("/articles")
 public class PostController {
     private final PostService postService;
-    private final UserServiceImpl userService;
 
     @Autowired
-    public PostController(PostService postService, UserServiceImpl userService) {
+    public PostController(PostService postService) {
         this.postService = postService;
-        this.userService = userService;
     }
 
     @GetMapping
     public ResponseEntity<HashMap<String,Object>> getAllPosts() {
+        return new ResponseEntity<>(getListPosts(this.postService.getAll()), HttpStatus.OK);
+    }
+
+    @GetMapping("/paginated")
+    public ResponseEntity<HashMap<String,Object>> getPostsPaginated(@RequestParam final Integer page, @RequestParam final Integer limit) {
+        return new ResponseEntity<>(getListPosts(this.postService.getAllPaginated(page, limit)), HttpStatus.OK);
+    }
+
+    @GetMapping("/paginatedByUser")
+    public ResponseEntity<HashMap<String,Object>> getPostsByUserPaginated(@RequestParam final Integer page, @RequestParam final Integer limit, @RequestParam final Long userId) {
+        return new ResponseEntity<>(getListPosts(this.postService.getAllByUserPaginated(page, limit, userId)), HttpStatus.OK);
+    }
+
+    public HashMap<String,Object> getListPosts(Collection<PostDto> articles) {
         HashMap<String,Object> map = new HashMap<>();
-        map.put("articles", this.postService.getAll());
-        map.put("articlesCount", this.postService.getAll().size());
-        return new ResponseEntity<>( map ,HttpStatus.OK);
+        map.put("articles", articles);
+        map.put("articlesCount", this.postService.getPostsCount());
+        return map;
     }
 
     @GetMapping("/{id}")
@@ -49,11 +59,6 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<PostDto> createPost(@RequestBody final Post post) {
-        System.out.println(post);
-        /*if(post.getUser() == null) {
-            User user = userService.getDefaultUser();
-            post.setUser(user);
-        }*/
         return new ResponseEntity<>(this.postService.create(post), HttpStatus.OK);
     }
 
@@ -85,11 +90,6 @@ public class PostController {
         } catch (PostException exception) {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
         }
-    }
-
-    @GetMapping("/page/{pageNumber}")
-    public ResponseEntity<Collection<PostDto>> getPostsPaginated(@PathVariable final Integer pageNumber) {
-        return new ResponseEntity<>(this.postService.getAllPaginated(pageNumber), HttpStatus.OK);
     }
 
 //    @GetMapping("/search")

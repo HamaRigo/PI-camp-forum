@@ -13,6 +13,8 @@ export interface Article {
   user: User;
   comments: Comment[];
   reacts: React[];
+  likesCount: number;
+  dislikesCount: number;
 
   slug?: string;
   description?: string;

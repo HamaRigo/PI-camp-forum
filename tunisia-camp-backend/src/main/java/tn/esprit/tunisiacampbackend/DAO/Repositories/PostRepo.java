@@ -13,6 +13,6 @@ public interface PostRepo extends JpaRepository<Post, Long> {
 
     Post findFirstByOrderByIdDesc();
 
-    @Query("from Post p order by p.dateTimeOfPost desc")
+    Page<Post> findAllByUserId(Long userId, final Pageable pageable);
     Page<Post> findAll(final Pageable pageable);
 }

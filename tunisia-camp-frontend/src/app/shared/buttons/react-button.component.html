@@ -1,0 +1,16 @@
+<fieldset class="pull-xs-right"  [disabled]="isSubmitting || !canReact">
+    <button
+        style="margin-left: 6px"
+        [class]="articleLiked ? 'btn btn-sm btn-secondary btn-liked' : 'btn btn-sm btn-info'" 
+        (click)="onToggleReact(true)"
+    >
+        <i class="ion-thumbsup"></i> {{article.likesCount}}
+    </button>
+    <button 
+        style="margin-left: 6px"
+        [class]="articleDisliked ? 'btn btn-sm btn-secondary btn-disliked': 'btn btn-sm btn-danger'" 
+        (click)="onToggleReact(false)"
+    >
+        <i class="ion-thumbsdown"></i> {{article.dislikesCount}}
+    </button>
+</fieldset>

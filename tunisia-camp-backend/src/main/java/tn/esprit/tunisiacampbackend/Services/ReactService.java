@@ -11,27 +11,29 @@ import tn.esprit.tunisiacampbackend.exception.ReactException;
 @Service
 public class ReactService {
 
-    private final ReactRepo reactrepo;
-
+    private final ReactRepo reactRepo;
     @Autowired
-    public ReactService(final ReactRepo reactrepo) {
-        this.reactrepo = reactrepo;
+    public ReactService(final ReactRepo reactRepo) {
+        this.reactRepo = reactRepo;
     }
 
     public ReactDto create(final React react) {
-        return ToDtoConverter.reactToDto(this.reactrepo.save(react));
+        return ToDtoConverter.reactToDto(this.reactRepo.save(react));
     }
 
     //    @PreAuthorize("hasRole('USER')")
     public ReactDto update(final React react) {
-        this.reactrepo.findById(react.getId()).orElseThrow(
+        this.reactRepo.findById(react.getId()).orElseThrow(
                 () -> new ReactException("Can't update. React not found!")
         );
-        return ToDtoConverter.reactToDto(this.reactrepo.save(react));
+        return ToDtoConverter.reactToDto(this.reactRepo.save(react));
     }
 
     //    @PreAuthorize("hasRole('USER')")
     public void delete(final Long id) {
-        this.reactrepo.deleteById(id);
+        this.reactRepo.findById(id).orElseThrow(
+                () -> new ReactException("Can't delete. React not found!")
+        );
+        this.reactRepo.deleteById(id);
     }
 }

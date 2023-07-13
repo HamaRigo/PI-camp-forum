@@ -3,7 +3,6 @@ package tn.esprit.tunisiacampbackend.DAO.DTO;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import tn.esprit.tunisiacampbackend.DAO.Entities.*;
-import java.util.List;
 
 @Getter
 @Setter
@@ -13,6 +12,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDTO {
     Long id;
+    String username;
     String firstName;
     String lastName;
     String email;
@@ -20,7 +20,6 @@ public class UserDTO {
     int phoneNumber;
     String image;
     Role role;
-
 //    List<OrderDTO> orders ;
 //    List<FeedbackDTO> feedbackList;
 }

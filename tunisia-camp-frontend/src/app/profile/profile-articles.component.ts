@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ArticleListConfig, Profile } from '../core';
+import { ArticleListConfig, Profile, User, UserService } from '../core';
 
 @Component({
   selector: 'app-profile-articles',
@@ -10,7 +10,8 @@ import { ArticleListConfig, Profile } from '../core';
 export class ProfileArticlesComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private userService: UserService,
   ) {}
 
   profile: Profile;
@@ -20,16 +21,28 @@ export class ProfileArticlesComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.route.parent.data.subscribe(
-      (data: {profile: Profile}) => {
-        this.profile = data.profile;
+    /*this.route.parent.data.subscribe(
+      (data: {profile: User}) => {
+        //console.log(data);
+        //this.profile = data.profile;
         this.articlesConfig = {
           type: 'all',
           filters: {}
         }; // Only method I found to refresh article load on swap
-        this.articlesConfig.filters.author = this.profile.username;
+        this.articlesConfig.filters.user = this.profile.username;
       }
-    );
-  }
+    );*/
 
+    return this.userService.currentUser.subscribe((
+      (userData: User) => {
+        this.profile = userData;
+        this.articlesConfig = {
+          type: 'all',
+          filters: {}
+        }; // Only method I found to refresh article load on swap
+        //this.articlesConfig.filters.user = this.profile;
+        this.articlesConfig.filters.userId = this.profile.id;
+      }
+    ));
+  }
 }

@@ -14,27 +14,31 @@ export class ProfileComponent implements OnInit {
     private userService: UserService
   ) { }
 
-  profile: Profile;
+  profile: User;
   currentUser: User;
   isUser: boolean;
 
   ngOnInit() {
-    this.route.data.pipe(
+    /*this.route.data.pipe(
       concatMap((data: { profile: Profile }) => {
-        this.profile = data.profile;
+        //console.log(data);
+        //this.profile = data.profile;
         // Load the current user's data.
         return this.userService.currentUser.pipe(tap(
           (userData: User) => {
             this.currentUser = userData;
+            this.profile = userData;
             this.isUser = (this.currentUser.username === this.profile.username);
           }
         ));
       })
-    ).subscribe();
+    ).subscribe();*/
+    return this.userService.currentUser.subscribe((
+      (userData: User) => {
+        this.currentUser = userData;
+        this.profile = userData;
+        this.isUser = (this.currentUser.username === this.profile.username);
+      }
+    ));
   }
-
-  onToggleFollowing(following: boolean) {
-    this.profile.following = following;
-  }
-
 }

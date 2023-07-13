@@ -50,6 +50,8 @@ public final class ToDtoConverter {
                 post.getDateTimeOfPost(),
                 post.getImageUrl(),
                 post.getRatingPoints(),
+                post.getLikesCount(),
+                post.getDislikesCount(),
                 userToDto(post.getUser()),
                 reactDtos,
                 commentDtos
@@ -59,6 +61,7 @@ public final class ToDtoConverter {
     public static UserDTO userToDto(final User user) {
         return new UserDTO(
                 user.getId(),
+                user.getUsername(),
                 user.getFirstName(),
                 user.getLastName(),
                 user.getEmail(),

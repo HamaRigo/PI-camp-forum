@@ -2,10 +2,9 @@ export interface ArticleListConfig {
   type: string;
 
   filters: {
-    // tag?: string,
-    author?: string,
+    userId?: number,
     favorited?: string,
     limit?: number,
-    offset?: number
+    page?: number,
   };
 }

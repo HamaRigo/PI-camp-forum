@@ -1,1 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+
+.btn-liked {
+    color: #5bc0de !important;
+}
+
+.btn-disliked {
+    color: #9d4444 !important;
+}

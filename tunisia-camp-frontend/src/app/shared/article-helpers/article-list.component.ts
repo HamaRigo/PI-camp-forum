@@ -39,9 +39,9 @@ export class ArticleListComponent {
     // Create limit and offset filter (if necessary)
     if (this.limit) {
       this.query.filters.limit = this.limit;
-      this.query.filters.offset =  (this.limit * (this.currentPage - 1));
+      this.query.filters.page = this.currentPage;
     }
-
+    
     this.articlesService.query(this.query)
     .subscribe(data => {
       this.loading = false;

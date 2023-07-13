@@ -19,9 +19,13 @@ export class ArticlesService {
     .forEach((key) => {
       params[key] = config.filters[key];
     });
-    return this.apiService
-    .get('/articles', new HttpParams({ fromObject: params })
-    );
+    
+    console.log(params);
+
+    if(config.filters.userId != null) {
+      return this.apiService.get('/articles/paginatedByUser', new HttpParams({ fromObject: params }));
+    }
+    return this.apiService.get('/articles/paginated', new HttpParams({ fromObject: params }));
   }
 
   get(id: number | string): Observable<Article> {

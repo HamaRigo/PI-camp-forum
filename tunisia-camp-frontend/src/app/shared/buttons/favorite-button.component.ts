@@ -2,8 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Article, ArticlesService, UserService } from '../../core';
-import { of } from 'rxjs';
-import { concatMap ,  tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-favorite-button',
@@ -24,9 +22,7 @@ export class FavoriteButtonComponent implements OnInit {
   ngOnInit() {
     this.userService.currentUser.subscribe(
       (userData) => {
-        if(this.article.user.id == userData.id) {
-          this.canModify = true;
-        }
+        this.canModify = (this.article.user.id === userData.id);
       }
     );
   }

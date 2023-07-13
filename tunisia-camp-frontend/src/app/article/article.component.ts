@@ -44,9 +44,7 @@ export class ArticleComponent implements OnInit {
       (data) => {
         this.article = data;
         this.comments = data.comments;
-        if(this.article.user.id == this.currentUser.id) {
-          this.canModify = true;
-        }
+        this.canModify = (this.article.user.id === this.currentUser.id);
     }
     );
   }

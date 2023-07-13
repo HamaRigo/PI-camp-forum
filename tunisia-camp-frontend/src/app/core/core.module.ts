@@ -10,7 +10,7 @@ import {
   CommentsService,
   JwtService,
   ProfilesService,
-  TagsService,
+  ReactsService,
   UserService
 } from './services';
 
@@ -26,7 +26,7 @@ import {
     CommentsService,
     JwtService,
     ProfilesService,
-    TagsService,
+    ReactsService,
     UserService
   ],
   declarations: []
