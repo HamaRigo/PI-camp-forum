@@ -11,5 +11,4 @@ export interface User {
   phoneNumber: number;
   image: string;
   role: string;
-  posts: Article[];
 }

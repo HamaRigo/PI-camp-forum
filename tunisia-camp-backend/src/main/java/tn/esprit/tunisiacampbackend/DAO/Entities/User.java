@@ -1,12 +1,9 @@
 package tn.esprit.tunisiacampbackend.DAO.Entities;
 
 import javax.persistence.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
 @Getter
@@ -36,10 +33,6 @@ public class User implements Serializable {
 
     @Enumerated(EnumType.STRING)
     Role role;
-
-    @JsonIgnoreProperties("user")
-    @OneToMany(mappedBy="user", orphanRemoval = true, cascade = CascadeType.REMOVE)
-    private List<Post> posts;
 
     public User() {
         super();

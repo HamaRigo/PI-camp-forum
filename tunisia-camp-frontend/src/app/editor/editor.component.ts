@@ -24,11 +24,11 @@ export class EditorComponent implements OnInit {
     private fb: FormBuilder
   ) {
     // use the FormBuilder to create a form group
-    const urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
+    const imageUrlRegex = /^http(s)?:\/\/.*\/.*\.(png|gif|webp|jpeg|jpg)\??.*$/;
 
     this.articleForm = this.fb.group({      
       title: ['', Validators.required ],
-      imageUrl: ['', [Validators.required, Validators.pattern(urlRegex)]],
+      imageUrl: ['', [Validators.required, Validators.pattern(imageUrlRegex)]],
       content: ['', Validators.required ]
     });
   }

@@ -49,8 +49,7 @@ public class Post {
     @Transient
     private Integer dislikesCount;
 
-    @JsonIgnoreProperties("posts")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private User user;
 
     @JsonIgnoreProperties("post")

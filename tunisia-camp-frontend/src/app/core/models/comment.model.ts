@@ -4,7 +4,7 @@ import { User } from './user.model';
 export interface Comment {
   id?: number;
   content: string;
-  dateTimeOfComment?: Date;
+  dateTimeOfComment?: string;
   user: User;
-  post: Article;
+  post?: Article;
 }

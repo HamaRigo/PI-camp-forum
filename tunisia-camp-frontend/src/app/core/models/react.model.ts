@@ -6,5 +6,5 @@ export interface React {
   id?: number;
   type: TypeReact;
   user: User;
-  post: Article;
+  post?: Article;
 }
