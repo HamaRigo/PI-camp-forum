@@ -33,7 +33,7 @@ public class PostController {
     @GetMapping("/liked")
     public ResponseEntity<HashMap<String,Object>> getAllPostsLiked(@RequestParam final Integer limit, @RequestParam(required = false) final Long userId) {
         Collection<PostDto> posts = this.postService.getMostLiked(limit, userId);
-        HashMap<String, Object> myMap = new HashMap<String, Object>() {{
+        HashMap<String, Object> myMap = new HashMap<>() {{
             put("articles", posts);
             put("articlesCount", posts.size());
         }};

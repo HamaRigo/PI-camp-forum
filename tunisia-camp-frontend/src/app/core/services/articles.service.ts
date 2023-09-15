@@ -15,6 +15,9 @@ export class ArticlesService {
     // Convert any filters over to Angular's URLSearchParams
     const params = {};
     
+    if(config.type == 'like') 
+      config.filters.limit = 10; // most 10 liked
+
     Object.keys(config.filters)
     .forEach((key) => {
       params[key] = config.filters[key];
@@ -23,12 +26,10 @@ export class ArticlesService {
       params['type'] = config.type;
     }
     
-    if(config.type == 'like') {
+    if(config.type == 'like') 
       return this.apiService.get('/articles/liked', new HttpParams({ fromObject: params }));
-    }
-    else if(config.filters.userId != null) {
+    else if(config.filters.userId != null)
       return this.apiService.get('/articles/paginatedByUser', new HttpParams({ fromObject: params }));
-    }
     return this.apiService.get('/articles/paginated', new HttpParams({ fromObject: params }));
   }
 

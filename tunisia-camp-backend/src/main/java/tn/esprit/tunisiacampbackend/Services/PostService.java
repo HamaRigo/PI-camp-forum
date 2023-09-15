@@ -41,12 +41,16 @@ public class PostService {
     public Collection<PostDto> getMostLiked(final Integer limit, final Long userId) {
         Collection<Post> posts;
         if(userId != null)
-            posts = this.postRepository.findAllByReactsIsNotEmptyAndUserId(userId);
+            posts = this.postRepository
+                    .findAllByReactsIsNotEmptyAndReactsTypeEqualsAndUserId(TypeReact.LIKE, userId);
         else
-            posts = this.postRepository.findAllByReactsIsNotEmpty();
+            posts = this.postRepository
+                    .findAllByReactsIsNotEmptyAndReactsTypeEquals(TypeReact.LIKE);
+
         setPostsReactsCount(posts);
 
         return posts.stream()
+                .distinct()
                 .sorted(Comparator.comparing(Post::getLikesCount).reversed())
                 .limit(limit)
                 .map(ToDtoConverter::postToDto)

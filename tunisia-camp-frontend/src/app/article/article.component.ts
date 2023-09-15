@@ -119,15 +119,15 @@ export class ArticleComponent implements OnInit {
       );
   }
 
-  onDeleteComment(comment) {
-    this.commentsService.destroy(comment.id)
+  onEditComment(comment) {
+    this.commentsService.edit(comment)
       .subscribe(
-        success => {
-          this.comments = this.comments.filter((item) => item !== comment);
+        editedComment => {
+          //Object.assign(comment, editedComment);
           Swal.fire({
             position: 'top-end',
             icon: 'success',
-            title: 'Your comment has been deleted',
+            title: 'Your comment has been updated',
             showConfirmButton: false,
             timer: 1500
           });
@@ -135,15 +135,16 @@ export class ArticleComponent implements OnInit {
       );
   }
 
-  onEditComment(comment) {
-    this.commentsService.edit(comment)
+  onDeleteComment(comment) {
+    this.commentsService.destroy(comment.id)
       .subscribe(
-        editedComment => {
-          Object.assign(comment, editedComment);
+        success => {
+          this.comments = this.comments.filter((item) => item !== comment);
+          this.article.comments = this.comments;
           Swal.fire({
             position: 'top-end',
             icon: 'success',
-            title: 'Your comment has been updated',
+            title: 'Your comment has been deleted',
             showConfirmButton: false,
             timer: 1500
           });
