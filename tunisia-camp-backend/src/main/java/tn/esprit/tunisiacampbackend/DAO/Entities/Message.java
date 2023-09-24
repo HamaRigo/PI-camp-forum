@@ -16,23 +16,19 @@ public class Message {
     @JsonIgnore
     @Id
     @GeneratedValue
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "channel")
     private String channel;
 
-    @Column(name = "sender")
     private String sender;
 
-    @Column(name = "content")
+    private String receiver;
+
     private String content;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "timestamp")
     private Date timestamp;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "read_date")
     private Date readDate;
 }

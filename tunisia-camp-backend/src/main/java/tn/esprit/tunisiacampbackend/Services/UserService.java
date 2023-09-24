@@ -11,20 +11,20 @@ public interface UserService {
      * then save the user into database, otherwise throw a {@link UsernameAlreadyUsedException}
      * </p>
      *
-     * @param user
+     * @param username
      * @return The connected user
      * @throws UsernameAlreadyUsedException
      */
-    User connect(User user) throws UsernameAlreadyUsedException;
+    User connect(String username) throws UsernameAlreadyUsedException;
 
     /**
      * <p>
      * Remove the user from the database.
      * </p>
      *
-     * @param user
+     * @param username
      */
-    User disconnect(User user);
+    User disconnect(String username);
 
     UserDTO getDefaultUser();
 }

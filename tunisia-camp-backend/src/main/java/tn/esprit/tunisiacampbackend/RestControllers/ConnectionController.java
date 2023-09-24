@@ -27,22 +27,17 @@ public class ConnectionController {
     private SimpMessagingTemplate template;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> login(@RequestBody User user) {
-
-        try {
-            User connectedUser = userService.connect(user);
+    public ResponseEntity<User> login(@RequestBody String username) throws UsernameAlreadyUsedException {
+            User connectedUser = userService.connect(username);
             template.convertAndSend("/channel/login", connectedUser);
-        } catch (UsernameAlreadyUsedException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
-        }
 
-        return ResponseEntity.ok().build();
+            return new ResponseEntity<>(connectedUser, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void logout(@RequestBody User user) {
-        User disconnectedUser = userService.disconnect(user);
+    public void logout(@RequestBody String username) {
+        User disconnectedUser = userService.disconnect(username);
         template.convertAndSend("/channel/logout", disconnectedUser);
     }
 

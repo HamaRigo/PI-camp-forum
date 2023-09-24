@@ -22,8 +22,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User connect(User user) throws UsernameAlreadyUsedException {
-        User dbUser = userRepository.findByUsername(user.getUsername());
+    public User connect(String username) throws UsernameAlreadyUsedException {
+        User dbUser = userRepository.findByUsername(username);
 
         if (dbUser != null) {
 
@@ -34,23 +34,20 @@ public class UserServiceImpl implements UserService {
             dbUser.setConnected(true);
             return userRepository.save(dbUser);
         }
-
-        user.setConnected(true);
-        return userRepository.save(user);
+        return null;
     }
 
     @Override
-    public User disconnect(User user) {
-        if (user == null) {
+    public User disconnect(String username) {
+        if (username == null) {
             return null;
         }
 
-        User dbUser = userRepository.findByUsername(user.getUsername());
-        if (dbUser == null) {
-            return user;
+        User dbUser = userRepository.findByUsername(username);
+//        if (dbUser != null) {
+            dbUser.setConnected(false);
+            return userRepository.save(dbUser);
         }
-
-        dbUser.setConnected(false);
-        return userRepository.save(dbUser);
-    }
+//        return null;
+//    }
 }
