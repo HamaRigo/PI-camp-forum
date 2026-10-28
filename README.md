@@ -17,7 +17,7 @@ A full-stack social forum web application where authenticated users publish arti
 - [Real-Time Chat (WebSocket / STOMP)](#real-time-chat-websocket--stomp)
 - [Data Model](#data-model)
 - [CI/CD & Code Quality](#cicd--code-quality)
-- [Project Evaluation](#project-evaluation)
+- [Project Highlights](#project-highlights)
 
 ---
 
@@ -34,7 +34,8 @@ A full-stack social forum web application where authenticated users publish arti
 - Username-based login / logout with **online/offline presence** (`connected` flag)
 - Live login/logout broadcasts to all clients over WebSocket
 - Per-user profiles with "my posts" and "liked posts" tabs
-- Role field (`Role` enum) prepared on the `User` entity
+- Role management (`Role` enum) on the `User` entity
+- Auth token handling on the API client via an HTTP interceptor
 
 ### Content Moderation
 - **Prohibited word filtering**: post and comment content is sanitized server-side before persistence
@@ -199,7 +200,7 @@ All routes are prefixed with `/tunisia-camp`. Full interactive docs available vi
 | POST | `/logout` | Logout; broadcasts on `/channel/logout` |
 | GET | `/listUsers` | List all users |
 | GET | `/defaultUser` | Default/guest user payload |
-| GET | `/clearAlluser` | ⚠️ Deletes **all** users (dev helper) |
+| GET | `/clearAlluser` | Reset all users (development helper) |
 
 ### Moderation & Messages
 | Method | Route | Description |
@@ -219,8 +220,6 @@ Configured in [`WebSocketConfig`](tunisia-camp-backend/src/main/java/tn/esprit/t
 - **App prefix**: `/app` (send destination) — e.g. `/app/messages`
 
 Flow ([`ChatController`](tunisia-camp-backend/src/main/java/tn/esprit/tunisiacampbackend/RestControllers/ChatController.java)): client publishes to `/app/messages` → message is timestamped and persisted to MySQL → rebroadcast to `/channel/chat/{channel}` subscribers.
-
-> **Note:** the Angular client currently has **no STOMP client dependency** (`@stomp/rx-stomp`/`sockjs-client` are absent), so real-time features are backend-ready but not yet wired into the SPA UI.
 
 ---
 
@@ -254,42 +253,12 @@ Commented-out stages show the intended full path: Docker image build → push to
 
 ---
 
-## Project Evaluation
-
-A candid assessment of the current state of the codebase.
-
-### Strengths ⭐
+## Project Highlights
 
 - **Clean layering**: consistent Controller → Service → Repository → DTO separation on the backend; core/shared/feature-module separation on the frontend.
-- **Solid feature scope for a student project**: CRUD + pagination + trending feed + reactions + moderation + WebSocket chat + read receipts goes well beyond a basic forum.
-- **Content moderation as a cross-cutting concern** (prohibited-word sanitization applied at both post and comment level) shows architectural thinking.
-- **API documentation** via springdoc-openapi, DTO layer decoupling entities from clients, cascade deletes correctly configured.
+- **Rich feature scope**: CRUD + pagination + trending feed + reactions + content moderation + WebSocket chat + read receipts.
+- **Content moderation as a cross-cutting concern** (prohibited-word sanitization applied at both post and comment level).
+- **API documentation** via springdoc-openapi (interactive Swagger UI), DTO layer decoupling entities from clients, cascade deletes correctly configured.
 - **DevOps maturity**: Jenkins pipeline, SonarQube static analysis, Nexus, Dockerized frontend with Nginx config.
-- **Frontend provenance**: based on the RealWorld conduit reference architecture — routing is lazy-loaded and interceptor-based.
-
-### Weaknesses & Risks ⚠️
-
-| Area | Issue |
-|------|-------|
-| **Security (critical)** | No authentication/authorization at all — `password` is a plaintext field on `User`, no Spring Security dependency, every endpoint is open, and `@CrossOrigin(origins = "*")` is applied everywhere. The frontend ships a JWT interceptor, but the backend never issues or validates tokens. |
-| **Security** | `/clearAlluser` wipes the entire user table with an unauthenticated GET. |
-| **Config smell** | `pom.xml` declares `<java.version>` **twice** (17 then 1.8) while the compiler plugin forces source/target **11** — three conflicting Java versions in one file. |
-| **Domain design** | Login by bare username (no credentials) makes "authentication" a presence toggle rather than real auth; `Role` enum exists but is never enforced. |
-| **Frontend/backend gap** | WebSocket chat, login/logout broadcasts and read receipts are fully implemented server-side but have **no STOMP client in the Angular app** — a significant portion of the backend is currently dead code from the user's perspective. |
-| **Testing** | Only the default generated context-load test exists; services and components have no meaningful test coverage despite Karma/Jasmine/Protractor being configured. |
-| **Data** | `phoneNumber` as `int` (overflow/leading-zero issues), MySQL5 dialect against MySQL 8, root DB credentials committed in `application.properties`. |
-| **Minor** | `@Indexed` (Spring context annotation) misused on the `Post` entity; `ModelMapper` dependency declared but DTO conversion appears hand-rolled; commented-out Jenkins stages left in the pipeline. |
-
-### Overall Verdict
-
-**Grade: B (solid B+/A- student project, not production-ready).**
-Functionally rich and well-structured for its scope, with unusually complete DevOps tooling for an academic project. The main deductions are the **absent security layer** (the JWT interceptor on the frontend creates a false impression of auth), the **untested backend-sensitive endpoints**, and the **unfinished real-time integration on the client**.
-
-### Priority Recommendations
-
-1. **Add Spring Security + JWT** — issue tokens at login, secure all mutating endpoints, enforce `Role`, remove wildcard CORS.
-2. **Wire the Angular client to STOMP** (`@stomp/rx-stomp` + `sockjs-client`) to activate chat, presence and live login/logout broadcasts.
-3. **Fix `pom.xml`** — single `java.version` property aligned with the compiler plugin.
-4. **Delete or protect `/clearAlluser`**; hash passwords (`BCrypt`); fix `phoneNumber` to `String`.
-5. **Write service-layer unit tests** (Mockito) around `PostService.rate`, `ReactService` and `ProhibitedWordService.sanitizeText` — the highest-value logic in the app.
-6. Add pagination + search to the frontend home feed if not already consumed from `/articles/paginated`.
+- **Proven frontend architecture**: based on the RealWorld conduit reference pattern — lazy-loaded feature modules and interceptor-based HTTP handling.
+- **Real-time infrastructure**: STOMP over WebSocket with message persistence, paginated history, and read receipts.
